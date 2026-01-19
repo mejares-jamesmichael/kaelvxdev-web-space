@@ -1,10 +1,11 @@
 <script lang="ts">
   export let text: string;
   export let hoverTrigger = true;
+  export let speed = 30;
   
   let displayText = text;
   let interval: ReturnType<typeof setInterval>;
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   
   function scramble() {
     let iteration = 0;
@@ -26,8 +27,8 @@
         clearInterval(interval);
       }
       
-      iteration += 1 / 3;
-    }, 30);
+      iteration += 1 / 2;
+    }, speed);
   }
 
   function handleMouseOver() {

@@ -47,7 +47,8 @@
   function draw() {
     if (!ctx) return;
     ctx.clearRect(0, 0, width, height);
-    
+
+    if (!ctx) return;
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     ctx.lineWidth = 1;
 
@@ -66,8 +67,8 @@
       if (dist < repulsionRadius) {
         const force = (repulsionRadius - dist) / repulsionRadius; // 0 to 1
         const angle = Math.atan2(dy, dx);
-        const pushStrength = 2; 
-        
+        const pushStrength = 2;
+
         // Push point away
         p.x += Math.cos(angle) * force * pushStrength;
         p.y += Math.sin(angle) * force * pushStrength;
@@ -76,7 +77,7 @@
       // 3. Bounce off edges
       if (p.x < 0 || p.x > width) p.vx *= -1;
       if (p.y < 0 || p.y > height) p.vy *= -1;
-      
+
       // Keep loosely within bounds to avoid getting lost
       if (p.x < 0) p.x = 0;
       if (p.x > width) p.x = width;
@@ -96,8 +97,8 @@
         if (dist < width * 0.3) {
           // Opacity based on distance (fade out long lines)
           const opacity = 1 - (dist / (width * 0.3));
-          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
-          
+          ctx.strokeStyle = `rgba(255,255,255,${opacity * 0.3})`;
+
           ctx.beginPath(); // Start new path for individual stroke styles if needed, or optimize batch
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
@@ -114,6 +115,7 @@
 
   onMount(() => {
     ctx = canvas.getContext('2d');
+    if (!ctx) return;
     init();
     
     window.addEventListener('resize', resize);
