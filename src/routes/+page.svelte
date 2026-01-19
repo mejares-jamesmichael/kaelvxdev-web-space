@@ -10,9 +10,12 @@
   <!-- LOGO (Top Left) -->
   <header class="pointer-events-auto">
     <div class="text-4xl font-bold tracking-tighter text-white">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 10 L15 10 L15 30 L5 30 Z" fill="white" />
-        <path d="M35 10 L20 20 L35 30" stroke="white" stroke-width="4" />
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="white" fill-rule="evenodd" clip-rule="evenodd" d="
+          M9 5H15V6H16V9H17V11H16V13H17V15H15V16H14V19H12V18H10V17H9V16H8V14H7V8H8V6H9V5ZM
+          9 10H13V13H9V10ZM
+          14 13H16V15H14V13Z
+        "/>
       </svg>
     </div>
   </header>
