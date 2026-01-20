@@ -22,11 +22,11 @@
 
   <!-- MAIN CONTENT (Vertically Centered, Left Aligned) -->
   <main class="max-w-xl -mt-10 pointer-events-auto">
-    <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
+    <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 font-mono tracking-tight">
       James Michael
     </h1>
 
-    <h2 class="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
+    <h2 class="text-2xl md:text-3xl font-semibold text-gray-300 mb-8 font-mono">
       Backend & DevOps Engineer
     </h2>
 
@@ -36,7 +36,7 @@
         and optimize <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
-      <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center">
+      <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
         <span class="text-white"><ScrambleText text="Linux" /></span> •
         <span class="text-white"><ScrambleText text="AWS" /></span> •
         <span class="text-white"><ScrambleText text="CI/CD" /></span> •
@@ -46,7 +46,7 @@
     </div>
 
     <!-- LINKS ROW -->
-    <div class="mt-10 flex flex-wrap gap-4 text-base font-medium">
+    <div class="mt-10 flex flex-wrap gap-4 text-base font-medium font-mono">
       <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Projects
       </a>
@@ -61,7 +61,7 @@
 
   <!-- FOOTER (Bottom Left) -->
   <footer class="pointer-events-auto">
-    <div class="flex flex-wrap gap-8 text-sm font-semibold text-white">
+    <div class="flex flex-wrap gap-8 text-sm font-semibold text-white font-mono">
       <a href="https://github.com/mejares-jamesmichael" target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
       <a href="https://linktr.ee/kaelvxd" target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
       <a href="mailto:jamesmichaelmejares@gmail.com" class="hover:text-gray-400 transition-colors">Email</a>
