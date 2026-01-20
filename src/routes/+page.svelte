@@ -52,7 +52,7 @@
         <span class="text-white"><ScrambleText text="AWS" /></span> •
         <span class="text-white"><ScrambleText text="CI/CD" /></span> •
         <span class="text-white"><ScrambleText text="Docker" /></span> •
-        <span class="text-white"><ScrambleText text="GitHub Actions" /></span>
+        <span class="text-white"><ScrambleText text="AI-automation" /></span>
       </p>
     </div>
 
