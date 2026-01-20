@@ -1,6 +1,16 @@
 <script lang="ts">
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
+
+  let emailCopied = false;
+
+  function copyEmail() {
+    navigator.clipboard.writeText('jamesmichaelmejares@gmail.com');
+    emailCopied = true;
+    setTimeout(() => {
+      emailCopied = false;
+    }, 2000);
+  }
 </script>
 
 <GeometricLines />
@@ -32,8 +42,9 @@
 
     <div class="space-y-6 text-lg md:text-xl font-normal leading-relaxed text-gray-200">
       <p>
-        I automate <span class="text-white"><ScrambleText text="deployments" /></span>, build reliable <span class="text-white"><ScrambleText text="backend systems" /></span>,
-        and optimize <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
+        I automate <span class="text-white"><ScrambleText text="deployments" /></span>, build reliable
+            <span class="text-white"><ScrambleText text="backend systems" /></span>,and optimize
+            <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
       <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
@@ -50,7 +61,8 @@
       <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Projects
       </a>
-      <a href="https://github.com/mejares-jamesmichael" target="_blank" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+      <a href="https://github.com/mejares-jamesmichael" target="_blank"
+          class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         GitHub
       </a>
       <a href="#contact" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
@@ -64,7 +76,9 @@
     <div class="flex flex-wrap gap-8 text-sm font-semibold text-white font-mono">
       <a href="https://github.com/mejares-jamesmichael" target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
       <a href="https://linktr.ee/kaelvxd" target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
-      <a href="mailto:jamesmichaelmejares@gmail.com" class="hover:text-gray-400 transition-colors">Email</a>
+      <button on:click={copyEmail} class="hover:text-gray-400 transition-colors">
+        {emailCopied ? 'Copied!' : 'Email'}
+      </button>
     </div>
   </footer>
 </div>
