@@ -33,7 +33,7 @@
     <div class="space-y-6 text-lg md:text-xl font-normal leading-relaxed text-gray-200">
       <p>
         I automate <span class="text-white"><ScrambleText text="deployments" /></span>, build reliable <span class="text-white"><ScrambleText text="backend systems" /></span>,
-        and optimize <span class="text-white"><ScrambleText text="cloud infrastructure" /></span>.
+        and optimize <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
       <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center">
@@ -47,7 +47,7 @@
 
     <!-- LINKS ROW -->
     <div class="mt-10 flex flex-wrap gap-4 text-base font-medium">
-      <a href="#projects" class="px-6 py-3 bg-white text-black rounded hover:bg-gray-200 transition-colors">
+      <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Projects
       </a>
       <a href="https://github.com/mejares-jamesmichael" target="_blank" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
