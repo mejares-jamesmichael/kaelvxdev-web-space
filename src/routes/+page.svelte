@@ -1,6 +1,7 @@
 <script lang="ts">
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
+  import Projects from '$lib/components/Projects.svelte';
 
   let emailCopied = false;
 
@@ -15,10 +16,10 @@
 
 <GeometricLines />
 
-<div class="relative z-10 h-screen flex flex-col justify-between p-12 md:p-24 max-w-[1600px] mx-auto pointer-events-none">
+<div class="relative z-10 min-h-screen flex flex-col p-12 md:p-24 max-w-[1600px] mx-auto pointer-events-none">
 
   <!-- LOGO (Top Left) -->
-  <header class="pointer-events-auto">
+  <header class="pointer-events-auto mb-20">
     <div class="text-4xl font-bold tracking-tighter text-white">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill="white" fill-rule="evenodd" clip-rule="evenodd" d="
@@ -30,8 +31,8 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT (Vertically Centered, Left Aligned) -->
-  <main class="max-w-xl -mt-10 pointer-events-auto">
+  <!-- MAIN HERO CONTENT -->
+  <main class="max-w-2xl pointer-events-auto mb-32">
     <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 font-mono tracking-tight">
       James Michael
     </h1>
@@ -42,8 +43,8 @@
 
     <div class="space-y-6 text-lg md:text-xl font-normal leading-relaxed text-gray-200">
       <p>
-        I automate <span class="text-white"><ScrambleText text="deployments" /></span>, build reliable
-            <span class="text-white"><ScrambleText text="backend systems" /></span>,and optimize
+        I automate <span class="text-white"><ScrambleText text="deployments," /></span> build reliable
+            <span class="text-white"><ScrambleText text="backend systems," /></span> and optimize
             <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
@@ -52,7 +53,7 @@
         <span class="text-white"><ScrambleText text="AWS" /></span> •
         <span class="text-white"><ScrambleText text="CI/CD" /></span> •
         <span class="text-white"><ScrambleText text="Docker" /></span> •
-        <span class="text-white"><ScrambleText text="AI-automation" /></span>
+        <span class="text-white"><ScrambleText text="GitHub Actions" /></span>
       </p>
     </div>
 
@@ -71,8 +72,10 @@
     </div>
   </main>
 
+  <Projects />
+
   <!-- FOOTER (Bottom Left) -->
-  <footer class="pointer-events-auto">
+  <footer id="contact" class="pointer-events-auto mt-20">
     <div class="flex flex-wrap gap-8 text-sm font-semibold text-white font-mono">
       <a href="https://github.com/mejares-jamesmichael" target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
       <a href="https://linktr.ee/kaelvxd" target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
