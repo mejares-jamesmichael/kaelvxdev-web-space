@@ -3,8 +3,8 @@
   export let description: string;
   export let tags: string[] = [];
   export let stats: { label: string; value: string; color?: string }[] = [];
-  export let repoUrl: string;
-  export let demoUrl: string | null = null;
+  export let repoUrl: string | undefined = undefined;
+  export let demoUrl: string | undefined = undefined;
 </script>
 
 <div class="group relative p-6 border border-gray-800 bg-black/50 hover:border-white/40 transition-all duration-300 rounded-sm">
