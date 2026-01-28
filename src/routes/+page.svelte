@@ -48,7 +48,7 @@
             <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
-      <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
+      <p id="skills" class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
         <span class="text-white"><ScrambleText text="Linux" /></span> •
         <span class="text-white"><ScrambleText text="AWS" /></span> •
         <span class="text-white"><ScrambleText text="CI/CD" /></span> •
@@ -62,9 +62,9 @@
       <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Projects
       </a>
-      <a href="https://github.com/mejares-jamesmichael" target="_blank"
+      <a href="#skills"
           class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
-        GitHub
+        Skills
       </a>
       <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Download CV
