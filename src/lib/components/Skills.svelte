@@ -36,7 +36,7 @@
   ];
 </script>
 
-<section id="skills" class="py-24 pointer-events-auto scroll-mt-24">
+<section id="skills" class="py-24 pointer-events-auto">
   <div class="mb-12">
     <h2 class="text-3xl font-bold text-white mb-4 font-mono flex items-center gap-4">
       <span class="text-blue-500">02.</span>
