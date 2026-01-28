@@ -2,6 +2,8 @@
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
+  import Skills from '$lib/components/Skills.svelte';
+  import Chatbot from '$lib/components/Chatbot.svelte';
 
   let emailCopied = false;
 
@@ -62,17 +64,19 @@
       <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         Projects
       </a>
-      <a href="https://github.com/mejares-jamesmichael" target="_blank"
+      <a href="#skills"
           class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
-        GitHub
+        Skills
       </a>
-      <a href="#contact" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
-        Let's Talk
+      <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+        Download CV
       </a>
     </div>
   </main>
 
   <Projects />
+  <Skills />
+  <Chatbot />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
