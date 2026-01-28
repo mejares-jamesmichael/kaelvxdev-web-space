@@ -66,8 +66,8 @@
           class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
         GitHub
       </a>
-      <a href="#contact" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
-        Let's Talk
+      <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+        Download CV
       </a>
     </div>
   </main>
