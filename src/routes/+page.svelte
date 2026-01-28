@@ -2,6 +2,7 @@
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
+  import Skills from '$lib/components/Skills.svelte';
 
   let emailCopied = false;
 
@@ -48,7 +49,7 @@
             <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
       </p>
 
-      <p id="skills" class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
+      <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
         <span class="text-white"><ScrambleText text="Linux" /></span> •
         <span class="text-white"><ScrambleText text="AWS" /></span> •
         <span class="text-white"><ScrambleText text="CI/CD" /></span> •
@@ -73,6 +74,7 @@
   </main>
 
   <Projects />
+  <Skills />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
