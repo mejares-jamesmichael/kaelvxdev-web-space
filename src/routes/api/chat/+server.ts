@@ -27,9 +27,16 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const data = await response.json();
     
-    // Adjust this based on your actual n8n output structure
-    // Assuming n8n returns { "output": "Bot response text" } or similar
-    const botText = data.output || data.text || data.message || "Response received.";
+    // n8n returns an array: [{ "output": "..." }]
+    let botText = "Response received.";
+    
+    if (Array.isArray(data) && data.length > 0) {
+      // Handle array response from n8n
+      botText = data[0].output || data[0].text || data[0].message || botText;
+    } else if (typeof data === 'object') {
+      // Handle object response
+      botText = data.output || data.text || data.message || botText;
+    }
 
     return json({ text: botText });
 

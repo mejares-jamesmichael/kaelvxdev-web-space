@@ -17,6 +17,32 @@
     { role: 'bot', text: 'System online. How can I assist you with James\'s portfolio?' }
   ];
 
+  // Simple markdown to HTML converter
+  function renderMarkdown(text: string): string {
+    return text
+      // Code blocks (```code```)
+      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-black/50 border border-white/10 rounded p-2 my-2 overflow-x-auto text-xs font-mono text-green-400"><code>$2</code></pre>')
+      // Inline code (`code`)
+      .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1 py-0.5 rounded text-xs font-mono text-blue-300">$1</code>')
+      // Headers (### Header)
+      .replace(/^### (.+)$/gm, '<strong class="block text-white mt-3 mb-1">$1</strong>')
+      .replace(/^## (.+)$/gm, '<strong class="block text-white text-base mt-3 mb-1">$1</strong>')
+      .replace(/^# (.+)$/gm, '<strong class="block text-white text-lg mt-3 mb-1">$1</strong>')
+      // Bold (**text**)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white">$1</strong>')
+      // Italic (*text*)
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      // Links [text](url)
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-400 hover:underline">$1</a>')
+      // Unordered lists (- item or * item)
+      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
+      // Numbered lists (1. item)
+      .replace(/^\d+\. (.+)$/gm, '<li class="ml-4 list-decimal">$1</li>')
+      // Line breaks
+      .replace(/\n\n/g, '<br/><br/>')
+      .replace(/\n/g, '<br/>');
+  }
+
   // Auto-scroll to bottom
   afterUpdate(() => {
     if (chatContainer) {
@@ -105,7 +131,11 @@
 
           <!-- Bubble -->
           <div class="max-w-[80%] rounded-lg px-3 py-2 text-sm leading-relaxed {msg.role === 'user' ? 'bg-white text-black' : 'bg-white/5 text-gray-300 border border-white/5'}">
-            {msg.text}
+            {#if msg.role === 'bot'}
+              {@html renderMarkdown(msg.text)}
+            {:else}
+              {msg.text}
+            {/if}
           </div>
         </div>
       {/each}
