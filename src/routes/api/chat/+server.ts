@@ -32,18 +32,31 @@ export const POST: RequestHandler = async ({ request }) => {
       throw new Error(`n8n responded with ${response.status}: ${errorText}`);
     }
 
-    const data = await response.json();
-    console.log('[Chat API] Received data:', JSON.stringify(data, null, 2));
+    // n8n returns streaming NDJSON (newline-delimited JSON)
+    const responseText = await response.text();
+    console.log('[Chat API] Received response text length:', responseText.length);
     
-    // n8n returns an array: [{ "output": "..." }]
     let botText = "Response received.";
     
-    if (Array.isArray(data) && data.length > 0) {
-      // Handle array response from n8n
-      botText = data[0].output || data[0].text || data[0].message || botText;
-    } else if (typeof data === 'object') {
-      // Handle object response
-      botText = data.output || data.text || data.message || botText;
+    // Parse streaming response - look for the last "Respond to Webhook" item
+    const lines = responseText.trim().split('\n');
+    console.log('[Chat API] Received', lines.length, 'lines');
+    
+    // Find the last line with type "item" from "Respond to Webhook"
+    for (let i = lines.length - 1; i >= 0; i--) {
+      try {
+        const line = JSON.parse(lines[i]);
+        if (line.type === 'item' && line.metadata?.nodeName === 'Respond to Webhook') {
+          // Parse the content which is a JSON string
+          const content = JSON.parse(line.content);
+          botText = content.output || content.text || content.message || botText;
+          console.log('[Chat API] Found response in line', i);
+          break;
+        }
+      } catch (e) {
+        // Skip invalid JSON lines
+        continue;
+      }
     }
 
     console.log('[Chat API] Returning bot text length:', botText.length);
