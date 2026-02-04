@@ -1,6 +1,9 @@
-import { N8N_WEBHOOK_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+
+// Fallback to test webhook URL if env var not set
+const TEST_WEBHOOK_URL = 'https://automate.kaelvxdev.space/webhook-test/c0f41a69-197e-4f33-a344-edfd55732518';
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
@@ -10,12 +13,9 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Message is required' }, { status: 400 });
     }
 
-    if (!N8N_WEBHOOK_URL) {
-      console.error('N8N_WEBHOOK_URL is not defined');
-      return json({ error: 'Server configuration error' }, { status: 500 });
-    }
+    const webhookUrl = env.N8N_WEBHOOK_URL || TEST_WEBHOOK_URL;
 
-    const response = await fetch(N8N_WEBHOOK_URL, {
+    const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chatInput: message })
