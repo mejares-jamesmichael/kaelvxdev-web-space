@@ -2,9 +2,6 @@ import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-// Fallback to test webhook URL if env var not set
-const TEST_WEBHOOK_URL = 'https://automate.kaelvxdev.space/webhook-test/c0f41a69-197e-4f33-a344-edfd55732518';
-
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const { message } = await request.json();
@@ -13,7 +10,15 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Message is required' }, { status: 400 });
     }
 
-    const webhookUrl = env.N8N_WEBHOOK_URL || TEST_WEBHOOK_URL;
+    const webhookUrl = env.N8N_WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      console.error('[Chat API] N8N_WEBHOOK_URL environment variable is not set');
+      return json({ error: 'Server configuration error' }, { status: 500 });
+    }
+
+    console.log('[Chat API] Sending request to n8n webhook');
+    console.log('[Chat API] Message:', message);
 
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -22,10 +27,13 @@ export const POST: RequestHandler = async ({ request }) => {
     });
 
     if (!response.ok) {
-      throw new Error(`n8n responded with ${response.status}`);
+      const errorText = await response.text();
+      console.error('[Chat API] n8n error:', response.status, errorText);
+      throw new Error(`n8n responded with ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('[Chat API] Received data:', JSON.stringify(data, null, 2));
     
     // n8n returns an array: [{ "output": "..." }]
     let botText = "Response received.";
@@ -38,10 +46,11 @@ export const POST: RequestHandler = async ({ request }) => {
       botText = data.output || data.text || data.message || botText;
     }
 
+    console.log('[Chat API] Returning bot text length:', botText.length);
     return json({ text: botText });
 
   } catch (error) {
-    console.error('Chat API Error:', error);
+    console.error('[Chat API] Error:', error);
     return json({ error: 'Failed to communicate with AI core.' }, { status: 500 });
   }
 };
