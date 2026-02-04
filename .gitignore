@@ -2,6 +2,7 @@
 .svelte-kit
 build
 dist
+.netlify
 
 # Dependencies
 /node_modules
