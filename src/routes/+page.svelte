@@ -1,8 +1,9 @@
 <script lang="ts">
-  import GeometricLines from '$lib/components/GeometricLines.svelte';
+import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
   import Skills from '$lib/components/Skills.svelte';
+  import Chatbot from '$lib/components/Chatbot.svelte';
 
   let emailCopied = false;
 
@@ -75,6 +76,7 @@
 
   <Projects />
   <Skills />
+  <Chatbot />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
