@@ -6,6 +6,7 @@
   let isOpen = false;
   let inputValue = '';
   let isLoading = false;
+  let isTyping = false;
   let chatContainer: HTMLDivElement;
 
   type Message = {
@@ -50,8 +51,19 @@
     }
   });
 
+  async function typeText(fullText: string) {
+    const botMsgIndex = messages.length;
+    messages = [...messages, { role: 'bot', text: '' }];
+    
+    for (let i = 0; i < fullText.length; i++) {
+      messages[botMsgIndex].text += fullText[i];
+      messages = messages; // Trigger reactivity
+      await new Promise(r => setTimeout(r, 15)); // Typewriter speed
+    }
+  }
+
   async function handleSubmit() {
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || isLoading || isTyping) return;
 
     // 1. Add User Message
     const userText = inputValue;
@@ -71,14 +83,18 @@
       
       if (data.error) throw new Error(data.error);
 
-      // 3. Add Bot Response
-      messages = [...messages, { role: 'bot', text: data.text }];
+      // 3. Add Bot Response with Typewriter Effect
+      isLoading = false;
+      isTyping = true;
+      await typeText(data.text);
 
     } catch (error) {
       console.error(error);
+      isLoading = false;
       messages = [...messages, { role: 'bot', text: 'Error: Connection to neural core failed.' }];
     } finally {
       isLoading = false;
+      isTyping = false;
     }
   }
 </script>
@@ -133,6 +149,9 @@
           <div class="max-w-[80%] rounded-lg px-3 py-2 text-sm leading-relaxed {msg.role === 'user' ? 'bg-white text-black' : 'bg-white/5 text-gray-300 border border-white/5'}">
             {#if msg.role === 'bot'}
               {@html renderMarkdown(msg.text)}
+              {#if isTyping && messages.indexOf(msg) === messages.length - 1}
+                <span class="inline-block w-1.5 h-4 bg-green-500 animate-pulse ml-0.5 align-middle"></span>
+              {/if}
             {:else}
               {msg.text}
             {/if}
@@ -164,12 +183,13 @@
         <input
           bind:value={inputValue}
           type="text"
-          placeholder="Ask about my projects..."
-          class="w-full rounded-lg border border-white/10 bg-white/5 py-2.5 pl-4 pr-10 text-sm text-white placeholder-gray-500 focus:border-white/30 focus:outline-none focus:ring-0"
+          placeholder={isTyping ? "Receiving transmission..." : "Ask about my projects..."}
+          disabled={isTyping || isLoading}
+          class="w-full rounded-lg border border-white/10 bg-white/5 py-2.5 pl-4 pr-10 text-sm text-white placeholder-gray-500 focus:border-white/30 focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed"
         />
         <button
           type="submit"
-          disabled={!inputValue.trim() || isLoading}
+          disabled={!inputValue.trim() || isLoading || isTyping}
           class="absolute right-2 p-1.5 text-gray-400 transition-colors hover:text-white disabled:opacity-50"
         >
           <Send class="h-4 w-4" />
