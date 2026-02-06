@@ -12,6 +12,8 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const webhookUrl = env.N8N_WEBHOOK_URL;
 
+    console.log('[Chat API] Webhook URL:', webhookUrl ? 'SET' : 'NOT SET');
+
     if (!webhookUrl) {
       console.error('[Chat API] N8N_WEBHOOK_URL environment variable is not set');
       return json({ error: 'Server configuration error' }, { status: 500 });
@@ -20,11 +22,18 @@ export const POST: RequestHandler = async ({ request }) => {
     console.log('[Chat API] Sending request to n8n webhook');
     console.log('[Chat API] Message:', message);
 
+    // Add timeout to prevent hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatInput: message })
+      body: JSON.stringify({ chatInput: message }),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
