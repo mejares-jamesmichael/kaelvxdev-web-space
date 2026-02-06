@@ -100,11 +100,11 @@
   <div class="mb-12">
     <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
       <span class="text-blue-500">03.</span>
-      <span>Interactive REPL</span>
+      <span>Chat with Kali-Agent</span>
       <div class="h-px bg-gray-800 flex-grow ml-4"></div>
     </h3>
     <p class="text-gray-400 font-mono text-sm mt-2">
-      // Query the neural core for deeper insights
+      // Have questions? chat Kael's kali agent
     </p>
   </div>
 
