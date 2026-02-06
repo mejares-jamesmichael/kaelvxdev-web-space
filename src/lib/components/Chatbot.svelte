@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { fly, fade } from 'svelte/transition';
-  import { X, Send, Bot, User, Sparkles } from 'lucide-svelte';
+  import { fade } from 'svelte/transition';
+  import { Send, Terminal, Cpu, ShieldCheck, Globe } from 'lucide-svelte';
   import { afterUpdate } from 'svelte';
 
-  let isOpen = false;
+  // Chat State
   let inputValue = '';
   let isLoading = false;
   let isTyping = false;
@@ -12,86 +12,83 @@
   type Message = {
     role: 'user' | 'bot';
     text: string;
+    time: string;
   };
 
   let messages: Message[] = [
-    { role: 'bot', text: 'System online. How can I assist you with James\'s portfolio?' }
+    {
+      role: 'bot',
+      text: 'Welcome to the kali REPL v1.0.4. \n\nI am a neural-linked agent trained on James\'s technical expertise. You can ask me about his personal life, education, work experience, skills, projects, or schedule.',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
   ];
 
-  // Simple markdown to HTML converter
+  // --- Chat Logic --- 
   function renderMarkdown(text: string): string {
     return text
-      // Code blocks (```code```)
-      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-black/50 border border-white/10 rounded p-2 my-2 overflow-x-auto text-xs font-mono text-green-400"><code>$2</code></pre>')
-      // Inline code (`code`)
-      .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1 py-0.5 rounded text-xs font-mono text-blue-300">$1</code>')
-      // Headers (### Header)
-      .replace(/^### (.+)$/gm, '<strong class="block text-white mt-3 mb-1">$1</strong>')
-      .replace(/^## (.+)$/gm, '<strong class="block text-white text-base mt-3 mb-1">$1</strong>')
-      .replace(/^# (.+)$/gm, '<strong class="block text-white text-lg mt-3 mb-1">$1</strong>')
-      // Bold (**text**)
-      .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white">$1</strong>')
-      // Italic (*text*)
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-      // Links [text](url)
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-400 hover:underline">$1</a>')
-      // Unordered lists (- item or * item)
-      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
-      // Numbered lists (1. item)
-      .replace(/^\d+\. (.+)$/gm, '<li class="ml-4 list-decimal">$1</li>')
-      // Line breaks
-      .replace(/\n\n/g, '<br/><br/>')
+      // Code blocks: sharper corners, darker bg, slate border
+      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-gray-900 border border-gray-800 rounded-sm p-4 my-3 overflow-x-auto text-xs font-mono text-green-400 shadow-inner"><code>$2</code></pre>')
+      // Inline code: sharper corners, subtle bg
+      .replace(/`([^`]+)`/g, '<code class="bg-gray-800/50 px-1.5 py-0.5 rounded-sm text-xs font-mono text-blue-300 border border-gray-700/50">$1</code>')
+      // Headers: Technical, uppercase, mono
+      .replace(/^### (.+)$/gm, '<strong class="block text-gray-400 mt-6 mb-2 font-mono text-xs tracking-widest uppercase border-b border-gray-800 pb-1">$1</strong>')
+      // Bold: White contrast
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+      // Links: Blue, underline on hover
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-500 hover:text-blue-400 hover:underline transition-colors">$1</a>')
+      // Lists: Custom marker
+      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-none relative pl-4 text-gray-300 mb-1 before:content-[\'-\'] before:absolute before:left-0 before:text-gray-600">$1</li>')
       .replace(/\n/g, '<br/>');
   }
 
-  // Auto-scroll to bottom
   afterUpdate(() => {
-    if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
+    if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
   });
 
   async function typeText(fullText: string) {
     const botMsgIndex = messages.length;
-    messages = [...messages, { role: 'bot', text: '' }];
+    messages = [...messages, {
+      role: 'bot',
+      text: '',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }];
     
     for (let i = 0; i < fullText.length; i++) {
       messages[botMsgIndex].text += fullText[i];
-      messages = messages; // Trigger reactivity
-      await new Promise(r => setTimeout(r, 15)); // Typewriter speed
+      messages = messages;
+      await new Promise(r => setTimeout(r, 8)); // Snappy terminal speed
     }
   }
 
   async function handleSubmit() {
     if (!inputValue.trim() || isLoading || isTyping) return;
-
-    // 1. Add User Message
     const userText = inputValue;
-    messages = [...messages, { role: 'user', text: userText }];
+    messages = [...messages, {
+      role: 'user',
+      text: userText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }];
     inputValue = '';
     isLoading = true;
 
     try {
-      // 2. Send to our own API proxy (hides the n8n URL)
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userText })
       });
-
       const data = await response.json();
-      
       if (data.error) throw new Error(data.error);
-
-      // 3. Add Bot Response with Typewriter Effect
       isLoading = false;
       isTyping = true;
       await typeText(data.text);
-
     } catch (error) {
-      console.error(error);
       isLoading = false;
-      messages = [...messages, { role: 'bot', text: 'Error: Connection to neural core failed.' }];
+      messages = [...messages, {
+        role: 'bot',
+        text: 'Fatal Error: Neural link severed. Check logs.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }];
     } finally {
       isLoading = false;
       isTyping = false;
@@ -99,102 +96,150 @@
   }
 </script>
 
-<!-- Floating Trigger Button -->
-<button
-  on:click={() => isOpen = !isOpen}
-  class="fixed bottom-6 right-6 z-[100] flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/80 text-white shadow-2xl backdrop-blur-xl transition-all hover:scale-110 hover:border-white/40 hover:bg-white/10 pointer-events-auto"
->
-  {#if isOpen}
-    <X class="h-6 w-6" />
-  {:else}
-    <Sparkles class="h-6 w-6" />
-  {/if}
-</button>
-
-<!-- Chat Window -->
-{#if isOpen}
-  <div
-    transition:fly={{ y: 20, duration: 300 }}
-    class="fixed bottom-24 right-6 z-[100] flex h-[500px] w-[350px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]/90 shadow-2xl backdrop-blur-xl sm:w-[400px] pointer-events-auto"
-  >
-    <!-- Header -->
-    <div class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
-      <div class="flex items-center gap-2">
-        <div class="flex h-2 w-2">
-          <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-        </div>
-        <span class="font-mono text-sm font-bold text-white">kali-agent</span>
-      </div>
-      <span class="text-[10px] text-gray-500 font-mono">LLM</span>
-    </div>
-
-    <!-- Messages Area -->
-    <div 
-      bind:this={chatContainer}
-      class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent"
-    >
-      {#each messages as msg}
-        <div class="flex gap-3 {msg.role === 'user' ? 'flex-row-reverse' : ''}">
-          <!-- Avatar -->
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5">
-            {#if msg.role === 'user'}
-              <User class="h-4 w-4 text-gray-400" />
-            {:else}
-              <Bot class="h-4 w-4 text-blue-400" />
-            {/if}
-          </div>
-
-          <!-- Bubble -->
-          <div class="max-w-[80%] rounded-lg px-3 py-2 text-sm leading-relaxed {msg.role === 'user' ? 'bg-white text-black' : 'bg-white/5 text-gray-300 border border-white/5'}">
-            {#if msg.role === 'bot'}
-              {@html renderMarkdown(msg.text)}
-              {#if isTyping && messages.indexOf(msg) === messages.length - 1}
-                <span class="inline-block w-1.5 h-4 bg-green-500 animate-pulse ml-0.5 align-middle"></span>
-              {/if}
-            {:else}
-              {msg.text}
-            {/if}
-          </div>
-        </div>
-      {/each}
-
-      <!-- Loading Indicator -->
-      {#if isLoading}
-        <div class="flex gap-3" transition:fade>
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5">
-            <Bot class="h-4 w-4 text-blue-400" />
-          </div>
-          <div class="flex items-center gap-1 rounded-lg border border-white/5 bg-white/5 px-4 py-3">
-            <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.3s]"></div>
-            <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.15s]"></div>
-            <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500"></div>
-          </div>
-        </div>
-      {/if}
-    </div>
-
-    <!-- Input Area -->
-    <form 
-      on:submit|preventDefault={handleSubmit}
-      class="border-t border-white/10 bg-black/20 p-4"
-    >
-      <div class="relative flex items-center">
-        <input
-          bind:value={inputValue}
-          type="text"
-          placeholder={isTyping ? "Receiving transmission..." : "Ask about my projects..."}
-          disabled={isTyping || isLoading}
-          class="w-full rounded-lg border border-white/10 bg-white/5 py-2.5 pl-4 pr-10 text-sm text-white placeholder-gray-500 focus:border-white/30 focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-        <button
-          type="submit"
-          disabled={!inputValue.trim() || isLoading || isTyping}
-          class="absolute right-2 p-1.5 text-gray-400 transition-colors hover:text-white disabled:opacity-50"
-        >
-          <Send class="h-4 w-4" />
-        </button>
-      </div>
-    </form>
+<section id="ai-repl" class="pointer-events-auto my-32 w-full">
+  <div class="mb-12">
+    <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
+      <span class="text-blue-500">03.</span>
+      <span>Interactive REPL</span>
+      <div class="h-px bg-gray-800 flex-grow ml-4"></div>
+    </h3>
+    <p class="text-gray-400 font-mono text-sm mt-2">
+      // Query the neural core for deeper insights
+    </p>
   </div>
-{/if}
+
+  <!-- Main Terminal Window -->
+  <div class="rounded-sm border border-gray-800 bg-black/80 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-gray-600 transition-colors duration-300">
+    
+    <!-- Sidebar / Status Panel (Hidden on small screens) -->
+    <div class="hidden md:flex w-64 border-r border-gray-800 flex-col bg-black/40">
+      
+      <!-- Header Area of Sidebar -->
+      <div class="p-4 border-b border-gray-800">
+        <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">System Status</div>
+        <div class="flex items-center gap-2">
+           <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+           <span class="text-xs text-green-400 font-mono font-bold">ONLINE</span>
+        </div>
+      </div>
+
+      <!-- Stats Grid (Aligned with ProjectCard style) -->
+      <div class="p-4 space-y-4">
+        <div>
+          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Telemetry</span>
+          <div class="grid gap-y-2 border-y border-gray-800 py-3">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-gray-500">LLM Core</span>
+              <span class="text-blue-400">v1.0.4</span>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-gray-500">Uptime</span>
+              <span class="text-purple-400">99.9%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-gray-500">Latency</span>
+              <span class="text-green-400">24ms</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Quick Access</span>
+          <div class="space-y-1">
+            {#each ['/projects', '/skills', '/contact'] as cmd}
+              <button 
+                on:click={() => { inputValue = cmd; handleSubmit(); }}
+                class="w-full text-left px-3 py-2 rounded-sm border border-gray-800 bg-gray-900/30 text-xs font-mono text-gray-400 hover:text-white hover:border-gray-600 hover:bg-gray-800 transition-all group-item"
+              >
+                <span class="text-blue-500 opacity-50 group-item-hover:opacity-100">></span> {cmd}
+              </button>
+            {/each}
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-auto p-4 border-t border-gray-800 text-[10px] text-gray-600 font-mono text-center">
+        session_id: {Math.random().toString(36).substring(7)}
+      </div>
+    </div>
+
+    <!-- Main REPL Area -->
+    <div class="flex-1 flex flex-col relative bg-black/20">
+      <!-- Terminal Header -->
+      <div class="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gray-900/50">
+        <div class="flex items-center gap-2">
+          <Terminal class="w-4 h-4 text-gray-500" />
+          <span class="text-xs font-mono text-gray-400">kaelvxdev@portfolio:~</span>
+        </div>
+        <!-- Window Controls (ASCII Style) -->
+        <div class="flex gap-4 text-xs font-mono text-gray-600">
+          <span>[ _ ]</span>
+          <span>[ □ ]</span>
+          <span class="hover:text-red-500 cursor-pointer transition-colors">[ x ]</span>
+        </div>
+      </div>
+
+      <!-- Messages Output -->
+      <div 
+        bind:this={chatContainer}
+        class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent"
+      >
+        {#each messages as msg}
+          <div class="flex flex-col gap-1 group">
+            <!-- Message Header -->
+            <div class="flex items-center gap-3 opacity-40 select-none group-hover:opacity-80 transition-opacity text-xs">
+              <span class="uppercase tracking-widest">{msg.time}</span>
+              {#if msg.role === 'user'}
+                <span class="text-blue-400 font-bold">visitor@web</span>
+              {:else}
+                <span class="text-green-400 font-bold">root@system</span>
+              {/if}
+            </div>
+
+            <!-- Message Body -->
+            <div class="{msg.role === 'user' ? 'text-gray-200' : 'text-gray-300'} pl-0">
+              {#if msg.role === 'user'}
+                <span class="text-blue-500 mr-2">$</span>{msg.text}
+              {:else}
+                <div class="border-l-2 border-gray-800 pl-3 mt-1">
+                  {@html renderMarkdown(msg.text)}
+                  {#if isTyping && messages.indexOf(msg) === messages.length - 1}
+                    <span class="inline-block w-2 h-4 bg-green-500 animate-pulse ml-1 align-middle"></span>
+                  {/if}
+                </div>
+              {/if}
+            </div>
+          </div>
+        {/each}
+
+        {#if isLoading}
+          <div class="flex items-center gap-2 text-gray-500 text-xs pl-0 animate-pulse">
+            <span class="text-green-500">$</span>
+            <span>processing_query...</span>
+          </div>
+        {/if}
+      </div>
+
+      <!-- Input Bar -->
+      <div class="p-4 bg-black border-t border-gray-800">
+        <form 
+          on:submit|preventDefault={handleSubmit}
+          class="flex items-center gap-3"
+        >
+          <span class="text-green-500 font-bold font-mono">➜ ~</span>
+          <input
+            bind:value={inputValue}
+            type="text"
+            placeholder={isTyping ? "" : "Enter command..."}
+            disabled={isTyping || isLoading}
+            class="flex-1 bg-transparent outline-none text-white font-mono text-sm placeholder-gray-700 caret-green-500"
+            autofocus
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
