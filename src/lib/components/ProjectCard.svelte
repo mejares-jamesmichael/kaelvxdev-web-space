@@ -7,9 +7,14 @@
   export let demoUrl: string | undefined = undefined;
 </script>
 
-<div class="group relative p-6 border border-gray-800 bg-black/50 hover:border-white/40 transition-all duration-300 rounded-sm">
+<div class="group relative p-6 border border-gray-800 bg-black/50 
+            hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]
+            transition-all duration-300 ease-out cursor-pointer
+            hover:-translate-y-1 rounded-sm">
   <!-- Hover Glow Effect -->
-  <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0
+              group-hover:from-blue-500/5 group-hover:to-purple-500/5
+              transition-all duration-500 pointer-events-none rounded-sm"></div>
 
   <!-- Header -->
   <div class="relative z-10 flex justify-between items-start mb-4">
