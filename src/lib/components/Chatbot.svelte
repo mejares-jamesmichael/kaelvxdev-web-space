@@ -1,13 +1,29 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { Send, Terminal, Cpu, ShieldCheck, Globe } from 'lucide-svelte';
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
 
   // Chat State
   let inputValue = '';
   let isLoading = false;
   let isTyping = false;
   let chatContainer: HTMLDivElement;
+  let isVisible = false;
+  let sectionRef: HTMLElement;
+
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef) observer.observe(sectionRef);
+    return () => observer.disconnect();
+  });
 
   type Message = {
     role: 'user' | 'bot';
@@ -60,6 +76,16 @@
     }
   }
 
+  function clearChat() {
+    messages = [
+      {
+        role: 'bot',
+        text: 'Console cleared. System ready.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+    ];
+  }
+
   async function handleSubmit() {
     if (!inputValue.trim() || isLoading || isTyping) return;
     const userText = inputValue;
@@ -96,7 +122,11 @@
   }
 </script>
 
-<section id="ai-repl" class="pointer-events-auto my-32 w-full">
+<section 
+  id="ai-repl" 
+  bind:this={sectionRef}
+  class="pointer-events-auto my-32 w-full transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+>
   <div class="mb-12">
     <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
       <span class="text-blue-500">03.</span>
@@ -175,7 +205,13 @@
         <div class="flex gap-4 text-xs font-mono text-gray-600">
           <span>[ _ ]</span>
           <span>[ □ ]</span>
-          <span class="hover:text-red-500 cursor-pointer transition-colors">[ x ]</span>
+          <button 
+            on:click={clearChat}
+            class="hover:text-red-500 cursor-pointer transition-colors"
+            title="Clear Terminal"
+          >
+            [ x ]
+          </button>
         </div>
       </div>
 
@@ -204,7 +240,7 @@
                 <div class="border-l-2 border-gray-800 pl-3 mt-1">
                   {@html renderMarkdown(msg.text)}
                   {#if isTyping && messages.indexOf(msg) === messages.length - 1}
-                    <span class="inline-block w-2 h-4 bg-green-500 animate-pulse ml-1 align-middle"></span>
+                    <span class="inline-block w-2 h-4 bg-green-500 animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
                   {/if}
                 </div>
               {/if}
@@ -233,7 +269,6 @@
             placeholder={isTyping ? "" : "Enter command..."}
             disabled={isTyping || isLoading}
             class="flex-1 bg-transparent outline-none text-white font-mono text-sm placeholder-gray-700 caret-green-500"
-            autofocus
             autocomplete="off"
             spellcheck="false"
           />

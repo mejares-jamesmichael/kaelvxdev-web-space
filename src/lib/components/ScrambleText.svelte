@@ -2,11 +2,14 @@
   export let text: string;
   export let hoverTrigger = true;
   export let speed = 30;
+  export let autoPlay = false;
   
   let displayText = text;
   let interval: ReturnType<typeof setInterval>;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   
+  $: if (autoPlay) scramble();
+
   function scramble() {
     let iteration = 0;
     

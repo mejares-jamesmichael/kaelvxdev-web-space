@@ -1,9 +1,31 @@
 <script lang="ts">
   import ProjectCard from './ProjectCard.svelte';
   import ScrambleText from './ScrambleText.svelte';
+  import { onMount } from 'svelte';
+
+  let isVisible = false;
+  let sectionRef: HTMLElement;
+
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef) observer.observe(sectionRef);
+    return () => observer.disconnect();
+  });
 </script>
 
-<section id="projects" class="py-24 pointer-events-auto">
+<section 
+  id="projects" 
+  bind:this={sectionRef}
+  class="py-24 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+>
   <div class="mb-12">
     <h2 class="text-3xl font-bold text-white mb-4 font-mono flex items-center gap-4">
       <span class="text-blue-500">01.</span>
