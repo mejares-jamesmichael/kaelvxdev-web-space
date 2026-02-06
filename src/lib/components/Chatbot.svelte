@@ -124,9 +124,9 @@
           <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-green-400 opacity-75"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
         </div>
-        <span class="font-mono text-sm font-bold text-white">AI_Assistant</span>
+        <span class="font-mono text-sm font-bold text-white">kali-assistant</span>
       </div>
-      <span class="text-[10px] text-gray-500 font-mono">v1.0.0</span>
+      <span class="text-[10px] text-gray-500 font-mono">LLM</span>
     </div>
 
     <!-- Messages Area -->
