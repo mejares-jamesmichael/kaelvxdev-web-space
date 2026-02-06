@@ -4,8 +4,14 @@ import GeometricLines from '$lib/components/GeometricLines.svelte';
   import Projects from '$lib/components/Projects.svelte';
   import Skills from '$lib/components/Skills.svelte';
   import Chatbot from '$lib/components/Chatbot.svelte';
+  import { onMount } from 'svelte';
 
   let emailCopied = false;
+  let autoScramble = false;
+
+  onMount(() => {
+    setTimeout(() => autoScramble = true, 500);
+  });
 
   function copyEmail() {
     navigator.clipboard.writeText('jamesmichaelmejares@gmail.com');
@@ -36,10 +42,10 @@ import GeometricLines from '$lib/components/GeometricLines.svelte';
   <!-- MAIN HERO CONTENT -->
   <main class="max-w-2xl pointer-events-auto mb-32">
     <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 font-mono tracking-tight">
-      James Michael
+      <ScrambleText text="James Michael" hoverTrigger={false} autoPlay={autoScramble} />
     </h1>
 
-    <h2 class="text-2xl md:text-3xl font-semibold text-gray-300 mb-8 font-mono">
+    <h2 class="text-2xl md:text-3xl font-semibold mb-8 font-mono bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
       Backend & DevOps Engineer
     </h2>
 
