@@ -18,7 +18,7 @@
   let messages: Message[] = [
     {
       role: 'bot',
-      text: 'Welcome to the kali REPL v1.0.4. \n\nI am a neural-linked agent trained on James\'s technical expertise. You can ask me about his personal life, education, work experience, skills, projects, or schedule.',
+      text: 'Welcome to the kali REPL \n\nI am a neural-linked agent trained on James\'s technical expertise. You can ask me about his personal life, education, work experience, skills, projects, or appoint a schedule.',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ];
