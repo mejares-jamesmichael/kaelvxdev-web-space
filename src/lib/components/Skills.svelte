@@ -57,29 +57,29 @@
 <section 
   id="skills" 
   bind:this={sectionRef}
-  class="py-24 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+  class="py-20 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
 >
   <div class="mb-12">
-    <h2 class="text-3xl font-bold text-white mb-4 font-mono flex items-center gap-4">
-      <span class="text-blue-500">02.</span>
+    <h2 class="section-header">
+      <span class="section-number">02.</span>
       <span>Technology Stack</span>
-      <div class="h-px bg-gray-800 flex-grow ml-4"></div>
+      <div class="section-divider"></div>
     </h2>
-    <p class="text-gray-400 font-mono text-sm">
+    <p class="section-description">
       // Tools & technologies I use to build and deploy
     </p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {#each skills as group}
-      <div class="p-6 border border-gray-800 bg-black/50 rounded-sm hover:border-blue-500/30 transition-colors hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+      <div class="card glow-card cursor-default">
         <h3 class="text-xl font-bold text-white mb-6 font-mono border-b border-gray-800 pb-2">
           {group.category}
         </h3>
-        <div class="space-y-4">
+        <div class="space-y-4 relative z-10">
           {#each group.items as skill}
-            <div class="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-200 hover:translate-x-2 cursor-pointer group">
-              <svelte:component this={skill.icon} class="w-5 h-5 text-gray-500 group-hover:text-blue-400 transition-transform duration-200 group-hover:scale-110" />
+            <div class="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 cursor-pointer group">
+              <svelte:component this={skill.icon} class="w-5 h-5 text-gray-500 group-hover:text-gray-300 transition-all duration-300 group-hover:scale-110" />
               <span class="font-mono text-sm">{skill.name}</span>
             </div>
           {/each}
