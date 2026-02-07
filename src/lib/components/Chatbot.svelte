@@ -139,10 +139,10 @@
   </div>
 
   <!-- Main Terminal Window -->
-  <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
+  <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)]/70 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
 
     <!-- Sidebar / Status Panel (Hidden on small screens) -->
-    <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]">
+    <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]/50">
 
       <!-- Header Area of Sidebar -->
       <div class="p-4 border-b border-[var(--border-default)]">
@@ -194,9 +194,9 @@
     </div>
 
     <!-- Main REPL Area -->
-    <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]">
+    <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]/30">
       <!-- Terminal Header -->
-      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]">
+      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]/50">
         <div class="flex items-center gap-2">
           <Terminal class="w-4 h-4 text-[var(--color-secondary)]" />
           <span class="text-xs font-mono text-[var(--color-secondary)]">kaelvxdev@portfolio:~</span>
@@ -221,9 +221,9 @@
         class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-[var(--border-default)] scrollbar-track-transparent"
       >
         {#each messages as msg}
-          <div class="flex flex-col gap-1 group">
+          <div class="flex flex-col gap-1 group/message p-3 rounded-sm transition-all duration-300 hover:bg-[var(--bg-card)]/40 hover:border-l-2 hover:border-[var(--color-primary)]/50 -ml-3 pl-3">
             <!-- Message Header -->
-            <div class="flex items-center gap-3 opacity-40 select-none group-hover:opacity-80 transition-opacity text-xs">
+            <div class="flex items-center gap-3 opacity-40 select-none group-hover/message:opacity-100 transition-opacity text-xs">
               <span class="uppercase tracking-widest">{msg.time}</span>
               {#if msg.role === 'user'}
                 <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
@@ -257,7 +257,7 @@
       </div>
 
       <!-- Input Bar -->
-      <div class="p-4 bg-[var(--bg-card)] border-t border-[var(--border-default)]">
+      <div class="p-4 bg-[var(--bg-card)]/50 border-t border-[var(--border-default)]">
         <form
           on:submit|preventDefault={handleSubmit}
           class="flex items-center gap-3"
