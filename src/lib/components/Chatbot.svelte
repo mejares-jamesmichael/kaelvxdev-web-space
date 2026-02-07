@@ -123,7 +123,7 @@
 </script>
 
 <section
-  id="ai-repl"
+  id="Kali-agent"
   bind:this={sectionRef}
   class="pointer-events-auto my-32 w-full transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
 >
