@@ -146,7 +146,7 @@
 
       <!-- Header Area of Sidebar -->
       <div class="p-4 border-b border-[var(--border-default)]">
-        <div class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
+        <div class="text-[16px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
         <div class="flex items-center gap-2">
            <div class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></div>
            <span class="text-xs text-[var(--color-success)] font-mono font-bold">ONLINE</span>
