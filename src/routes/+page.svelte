@@ -66,15 +66,14 @@ import GeometricLines from '$lib/components/GeometricLines.svelte';
     </div>
 
     <!-- LINKS ROW -->
-    <div class="mt-10 flex flex-wrap gap-4 text-base font-medium font-mono">
-      <a href="#projects" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+    <div class="mt-10 flex flex-wrap gap-4 text-base">
+      <a href="#projects" class="btn text-white">
         Projects
       </a>
-      <a href="#skills"
-          class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+      <a href="#skills" class="btn text-white">
         Skills
       </a>
-      <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="px-6 py-3 border border-white text-white rounded hover:bg-white hover:text-black transition-colors">
+      <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="btn text-white">
         Download CV
       </a>
     </div>

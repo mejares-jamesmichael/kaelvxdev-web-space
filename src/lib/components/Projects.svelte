@@ -24,15 +24,15 @@
 <section 
   id="projects" 
   bind:this={sectionRef}
-  class="py-24 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+  class="py-20 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
 >
   <div class="mb-12">
-    <h2 class="text-3xl font-bold text-white mb-4 font-mono flex items-center gap-4">
-      <span class="text-blue-500">01.</span>
+    <h2 class="section-header">
+      <span class="section-number">01.</span>
       <span>Project Showcase</span>
-      <div class="h-px bg-gray-800 flex-grow ml-4"></div>
+      <div class="section-divider"></div>
     </h2>
-    <p class="text-gray-400 font-mono text-sm">
+    <p class="section-description">
       // Engineering robust systems & automated pipelines
     </p>
   </div>
