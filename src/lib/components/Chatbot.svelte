@@ -39,21 +39,21 @@
     }
   ];
 
-  // --- Chat Logic --- 
+  // --- Chat Logic ---
   function renderMarkdown(text: string): string {
     return text
       // Code blocks: sharper corners, darker bg, slate border
-      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-gray-900 border border-gray-800 rounded-sm p-4 my-3 overflow-x-auto text-xs font-mono text-green-400 shadow-inner"><code>$2</code></pre>')
+      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm p-4 my-3 overflow-x-auto text-xs font-mono text-[var(--color-success)] shadow-inner"><code>$2</code></pre>')
       // Inline code: sharper corners, subtle bg
-      .replace(/`([^`]+)`/g, '<code class="bg-gray-800/50 px-1.5 py-0.5 rounded-sm text-xs font-mono text-blue-300 border border-gray-700/50">$1</code>')
+      .replace(/`([^`]+)`/g, '<code class="bg-[var(--bg-card)] px-1.5 py-0.5 rounded-sm text-xs font-mono text-[var(--color-primary)] border border-[var(--border-default)]">$1</code>')
       // Headers: Technical, uppercase, mono
-      .replace(/^### (.+)$/gm, '<strong class="block text-gray-400 mt-6 mb-2 font-mono text-xs tracking-widest uppercase border-b border-gray-800 pb-1">$1</strong>')
+      .replace(/^### (.+)$/gm, '<strong class="block text-[var(--color-primary)] mt-6 mb-2 font-mono text-xs tracking-widest uppercase border-b border-[var(--border-default)] pb-1">$1</strong>')
       // Bold: White contrast
       .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
       // Links: Blue, underline on hover
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-500 hover:text-blue-400 hover:underline transition-colors">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-[var(--color-primary)] hover:text-[var(--color-secondary)] hover:underline transition-colors">$1</a>')
       // Lists: Custom marker
-      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-none relative pl-4 text-gray-300 mb-1 before:content-[\'-\'] before:absolute before:left-0 before:text-gray-600">$1</li>')
+      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-none relative pl-4 text-[var(--color-secondary)] mb-1 before:content-[\'-\'] before:absolute before:left-0 before:text-[var(--color-secondary)]">$1</li>')
       .replace(/\n/g, '<br/>');
   }
 
@@ -68,7 +68,7 @@
       text: '',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }];
-    
+
     for (let i = 0; i < fullText.length; i++) {
       messages[botMsgIndex].text += fullText[i];
       messages = messages;
@@ -122,90 +122,90 @@
   }
 </script>
 
-<section 
-  id="ai-repl" 
+<section
+  id="ai-repl"
   bind:this={sectionRef}
   class="pointer-events-auto my-32 w-full transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
 >
   <div class="mb-12">
     <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
-      <span class="text-blue-500">03.</span>
+      <span class="text-[var(--color-primary)]">03.</span>
       <span>Chat with Kali-Agent</span>
-      <div class="h-px bg-gray-800 flex-grow ml-4"></div>
+      <div class="h-px bg-[var(--border-default)] flex-grow ml-4"></div>
     </h3>
-    <p class="text-gray-400 font-mono text-sm mt-2">
+    <p class="text-[var(--color-secondary)] font-mono text-sm mt-2">
       // Have questions? chat Kael's kali agent
     </p>
   </div>
 
   <!-- Main Terminal Window -->
-  <div class="rounded-sm border border-gray-800 bg-black/80 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-gray-600 transition-colors duration-300">
-    
+  <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
+
     <!-- Sidebar / Status Panel (Hidden on small screens) -->
-    <div class="hidden md:flex w-64 border-r border-gray-800 flex-col bg-black/40">
-      
+    <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]">
+
       <!-- Header Area of Sidebar -->
-      <div class="p-4 border-b border-gray-800">
-        <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">System Status</div>
+      <div class="p-4 border-b border-[var(--border-default)]">
+        <div class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
         <div class="flex items-center gap-2">
-           <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-           <span class="text-xs text-green-400 font-mono font-bold">ONLINE</span>
+           <div class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></div>
+           <span class="text-xs text-[var(--color-success)] font-mono font-bold">ONLINE</span>
         </div>
       </div>
 
       <!-- Stats Grid (Aligned with ProjectCard style) -->
       <div class="p-4 space-y-4">
         <div>
-          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Telemetry</span>
-          <div class="grid gap-y-2 border-y border-gray-800 py-3">
+          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Telemetry</span>
+          <div class="grid gap-y-2 border-y border-[var(--border-default)] py-3">
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-gray-500">LLM Core</span>
-              <span class="text-blue-400">v1.0.4</span>
+              <span class="text-[var(--color-secondary)]">LLM Core</span>
+              <span class="text-[var(--color-primary)]">v1.0.4</span>
             </div>
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-gray-500">Uptime</span>
-              <span class="text-purple-400">99.9%</span>
+              <span class="text-[var(--color-secondary)]">Uptime</span>
+              <span class="text-[var(--color-primary)]">99.9%</span>
             </div>
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-gray-500">Latency</span>
-              <span class="text-green-400">24ms</span>
+              <span class="text-[var(--color-secondary)]">Latency</span>
+              <span class="text-[var(--color-success)]">24ms</span>
             </div>
           </div>
         </div>
 
         <div>
-          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Quick Access</span>
+          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Quick Access</span>
           <div class="space-y-1">
             {#each ['/projects', '/skills', '/contact'] as cmd}
-              <button 
+              <button
                 on:click={() => { inputValue = cmd; handleSubmit(); }}
-                class="w-full text-left px-3 py-2 rounded-sm border border-gray-800 bg-gray-900/30 text-xs font-mono text-gray-400 hover:text-white hover:border-gray-600 hover:bg-gray-800 transition-all group-item"
+                class="w-full text-left px-3 py-2 rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] text-xs font-mono text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all group-item"
               >
-                <span class="text-blue-500 opacity-50 group-item-hover:opacity-100">></span> {cmd}
+                <span class="text-[var(--color-primary)] opacity-50 group-item-hover:opacity-100">></span> {cmd}
               </button>
             {/each}
           </div>
         </div>
       </div>
 
-      <div class="mt-auto p-4 border-t border-gray-800 text-[10px] text-gray-600 font-mono text-center">
+      <div class="mt-auto p-4 border-t border-[var(--border-default)] text-[16px] text-[var(--color-secondary)] font-mono text-center">
         session_id: {Math.random().toString(36).substring(7)}
       </div>
     </div>
 
     <!-- Main REPL Area -->
-    <div class="flex-1 flex flex-col relative bg-black/20">
+    <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]">
       <!-- Terminal Header -->
-      <div class="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gray-900/50">
+      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]">
         <div class="flex items-center gap-2">
-          <Terminal class="w-4 h-4 text-gray-500" />
-          <span class="text-xs font-mono text-gray-400">kaelvxdev@portfolio:~</span>
+          <Terminal class="w-4 h-4 text-[var(--color-secondary)]" />
+          <span class="text-xs font-mono text-[var(--color-secondary)]">kaelvxdev@portfolio:~</span>
         </div>
         <!-- Window Controls (ASCII Style) -->
-        <div class="flex gap-4 text-xs font-mono text-gray-600">
+        <div class="flex gap-4 text-xs font-mono text-[var(--color-secondary)]">
           <span>[ _ ]</span>
           <span>[ □ ]</span>
-          <button 
+          <button
             on:click={clearChat}
             class="hover:text-red-500 cursor-pointer transition-colors"
             title="Clear Terminal"
@@ -216,9 +216,9 @@
       </div>
 
       <!-- Messages Output -->
-      <div 
+      <div
         bind:this={chatContainer}
-        class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent"
+        class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-[var(--border-default)] scrollbar-track-transparent"
       >
         {#each messages as msg}
           <div class="flex flex-col gap-1 group">
@@ -226,21 +226,21 @@
             <div class="flex items-center gap-3 opacity-40 select-none group-hover:opacity-80 transition-opacity text-xs">
               <span class="uppercase tracking-widest">{msg.time}</span>
               {#if msg.role === 'user'}
-                <span class="text-blue-400 font-bold">visitor@web</span>
+                <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
               {:else}
-                <span class="text-green-400 font-bold">root@system</span>
+                <span class="text-[var(--color-success)] font-bold">root@system</span>
               {/if}
             </div>
 
             <!-- Message Body -->
-            <div class="{msg.role === 'user' ? 'text-gray-200' : 'text-gray-300'} pl-0">
+            <div class="{msg.role === 'user' ? 'text-[var(--color-primary)]' : 'text-[var(--color-secondary)]'} pl-0">
               {#if msg.role === 'user'}
-                <span class="text-blue-500 mr-2">$</span>{msg.text}
+                <span class="text-[var(--color-primary)] mr-2">$</span>{msg.text}
               {:else}
-                <div class="border-l-2 border-gray-800 pl-3 mt-1">
+                <div class="border-l-2 border-[var(--border-default)] pl-3 mt-1">
                   {@html renderMarkdown(msg.text)}
                   {#if isTyping && messages.indexOf(msg) === messages.length - 1}
-                    <span class="inline-block w-2 h-4 bg-green-500 animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
+                    <span class="inline-block w-2 h-4 bg-[var(--color-success)] animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
                   {/if}
                 </div>
               {/if}
@@ -249,26 +249,26 @@
         {/each}
 
         {#if isLoading}
-          <div class="flex items-center gap-2 text-gray-500 text-xs pl-0 animate-pulse">
-            <span class="text-green-500">$</span>
+          <div class="flex items-center gap-2 text-[var(--color-secondary)] text-xs pl-0 animate-pulse">
+            <span class="text-[var(--color-success)]">$</span>
             <span>processing_query...</span>
           </div>
         {/if}
       </div>
 
       <!-- Input Bar -->
-      <div class="p-4 bg-black border-t border-gray-800">
-        <form 
+      <div class="p-4 bg-[var(--bg-card)] border-t border-[var(--border-default)]">
+        <form
           on:submit|preventDefault={handleSubmit}
           class="flex items-center gap-3"
         >
-          <span class="text-green-500 font-bold font-mono">➜ ~</span>
+          <span class="text-[var(--color-success)] font-bold font-mono">➜ ~</span>
           <input
             bind:value={inputValue}
             type="text"
             placeholder={isTyping ? "" : "Enter command..."}
             disabled={isTyping || isLoading}
-            class="flex-1 bg-transparent outline-none text-white font-mono text-sm placeholder-gray-700 caret-green-500"
+            class="flex-1 bg-transparent outline-none text-[var(--color-primary)] font-mono text-sm placeholder-[var(--color-secondary)] caret-[var(--color-success)]"
             autocomplete="off"
             spellcheck="false"
           />
