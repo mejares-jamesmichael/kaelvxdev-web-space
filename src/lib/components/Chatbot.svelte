@@ -1,17 +1,16 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { Send, Terminal, Cpu, ShieldCheck, Globe } from 'lucide-svelte';
-  import { afterUpdate, onMount } from 'svelte';
 
   // Chat State
-  let inputValue = '';
-  let isLoading = false;
-  let isTyping = false;
+  let inputValue = $state('');
+  let isLoading = $state(false);
+  let isTyping = $state(false);
   let chatContainer: HTMLDivElement;
-  let isVisible = false;
+  let isVisible = $state(false);
   let sectionRef: HTMLElement;
 
-  onMount(() => {
+  $effect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -31,13 +30,13 @@
     time: string;
   };
 
-  let messages: Message[] = [
+  let messages = $state<Message[]>([
     {
       role: 'bot',
       text: 'Welcome to the kali REPL \n\nI am a neural-linked agent trained on James\'s technical expertise. You can ask me about his personal life, education, work experience, skills, projects, or appoint a schedule.',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
-  ];
+  ]);
 
   // --- Chat Logic ---
   function renderMarkdown(text: string): string {
@@ -57,7 +56,7 @@
       .replace(/\n/g, '<br/>');
   }
 
-  afterUpdate(() => {
+  $effect(() => {
     if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
   });
 
@@ -178,7 +177,7 @@
           <div class="space-y-1">
             {#each ['/projects', '/skills', '/contact'] as cmd}
               <button
-                on:click={() => { inputValue = cmd; handleSubmit(); }}
+                onclick={() => { inputValue = cmd; handleSubmit(); }}
                 class="w-full text-left px-3 py-2 rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] text-xs font-mono text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all group-item"
               >
                 <span class="text-[var(--color-primary)] opacity-50 group-item-hover:opacity-100">></span> {cmd}
@@ -206,7 +205,7 @@
           <span>[ _ ]</span>
           <span>[ □ ]</span>
           <button
-            on:click={clearChat}
+            onclick={clearChat}
             class="hover:text-red-500 cursor-pointer transition-colors"
             title="Clear Terminal"
           >
@@ -259,7 +258,7 @@
       <!-- Input Bar -->
       <div class="p-4 bg-[var(--bg-card)]/50 border-t border-[var(--border-default)]">
         <form
-          on:submit|preventDefault={handleSubmit}
+          onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}
           class="flex items-center gap-3"
         >
           <span class="text-[var(--color-success)] font-bold font-mono">➜ ~</span>

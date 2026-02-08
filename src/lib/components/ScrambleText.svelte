@@ -1,14 +1,25 @@
 <script lang="ts">
-  export let text: string;
-  export let hoverTrigger = true;
-  export let speed = 30;
-  export let autoPlay = false;
+  interface Props {
+    text: string;
+    hoverTrigger?: boolean;
+    speed?: number;
+    autoPlay?: boolean;
+  }
   
-  let displayText = text;
+  let { text, hoverTrigger = true, speed = 30, autoPlay = false }: Props = $props();
+  
+  let displayText = $state('');
   let interval: ReturnType<typeof setInterval>;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   
-  $: if (autoPlay) scramble();
+  // Initialize displayText when text changes
+  $effect(() => {
+    displayText = text;
+  });
+  
+  $effect(() => {
+    if (autoPlay) scramble();
+  });
 
   function scramble() {
     let iteration = 0;
@@ -41,7 +52,7 @@
 
 <span 
   class="inline-block cursor-default font-mono transition-colors hover:text-white"
-  on:mouseenter={handleMouseOver}
+  onmouseenter={handleMouseOver}
   role="presentation"
 >
   {displayText}
