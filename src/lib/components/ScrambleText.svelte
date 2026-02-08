@@ -12,7 +12,7 @@
   let interval: ReturnType<typeof setInterval>;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   
-  // Initialize displayText when text changes
+  // Sync displayText with text prop changes
   $effect(() => {
     displayText = text;
   });

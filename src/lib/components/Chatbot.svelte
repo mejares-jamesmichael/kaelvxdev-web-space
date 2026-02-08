@@ -57,7 +57,11 @@
   }
 
   $effect(() => {
-    if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Only scroll when messages array changes
+    messages;
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
   });
 
   async function typeText(fullText: string) {
