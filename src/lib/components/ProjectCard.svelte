@@ -1,10 +1,14 @@
 <script lang="ts">
-  export let title: string;
-  export let description: string;
-  export let tags: string[] = [];
-  export let stats: { label: string; value: string; color?: string }[] = [];
-  export let repoUrl: string | undefined = undefined;
-  export let demoUrl: string | undefined = undefined;
+  interface Props {
+    title: string;
+    description: string;
+    tags?: string[];
+    stats?: { label: string; value: string; color?: string }[];
+    repoUrl?: string;
+    demoUrl?: string;
+  }
+  
+  let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined }: Props = $props();
 </script>
 
 <div class="card glow-card cursor-pointer group">

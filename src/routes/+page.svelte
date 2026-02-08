@@ -1,15 +1,14 @@
 <script lang="ts">
-import GeometricLines from '$lib/components/GeometricLines.svelte';
+  import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
   import Skills from '$lib/components/Skills.svelte';
   import Chatbot from '$lib/components/Chatbot.svelte';
-  import { onMount } from 'svelte';
 
-  let emailCopied = false;
-  let autoScramble = false;
+  let emailCopied = $state(false);
+  let autoScramble = $state(false);
 
-  onMount(() => {
+  $effect(() => {
     setTimeout(() => autoScramble = true, 500);
   });
 
@@ -88,7 +87,7 @@ import GeometricLines from '$lib/components/GeometricLines.svelte';
     <div class="flex flex-wrap gap-8 text-sm font-semibold text-white font-mono">
       <a href="https://github.com/mejares-jamesmichael" target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
       <a href="https://linktr.ee/kaelvxd" target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
-      <button on:click={copyEmail} class="hover:text-gray-400 transition-colors">
+      <button onclick={copyEmail} class="hover:text-gray-400 transition-colors">
         {emailCopied ? 'Copied!' : 'Email'}
       </button>
     </div>
