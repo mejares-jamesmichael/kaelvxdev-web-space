@@ -3,12 +3,11 @@
     Code, Server, Database, Cloud, Terminal, Cpu, Layout, 
     GitBranch, Container, Shield, Zap, Smartphone, Command, FileCode
   } from 'lucide-svelte';
-  import { onMount } from 'svelte';
 
-  let isVisible = false;
+  let isVisible = $state(false);
   let sectionRef: HTMLElement;
 
-  onMount(() => {
+  $effect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -78,8 +77,9 @@
         </h3>
         <div class="space-y-4 relative z-10">
           {#each group.items as skill}
+            {@const Icon = skill.icon}
             <div class="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 cursor-pointer group">
-              <svelte:component this={skill.icon} class="w-5 h-5 text-gray-500 group-hover:text-gray-300 transition-all duration-300 group-hover:scale-110" />
+              <Icon class="w-5 h-5 text-gray-500 group-hover:text-gray-300 transition-all duration-300 group-hover:scale-110" />
               <span class="font-mono text-sm">{skill.name}</span>
             </div>
           {/each}

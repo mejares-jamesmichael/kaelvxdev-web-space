@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D | null;
   let width: number;
@@ -122,7 +120,7 @@
     animationFrame = requestAnimationFrame(loop);
   }
 
-  onMount(() => {
+  $effect(() => {
     ctx = canvas.getContext('2d');
     if (!ctx) return;
     init();

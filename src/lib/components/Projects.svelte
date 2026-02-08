@@ -1,12 +1,11 @@
 <script lang="ts">
   import ProjectCard from './ProjectCard.svelte';
   import ScrambleText from './ScrambleText.svelte';
-  import { onMount } from 'svelte';
 
-  let isVisible = false;
+  let isVisible = $state(false);
   let sectionRef: HTMLElement;
 
-  onMount(() => {
+  $effect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
