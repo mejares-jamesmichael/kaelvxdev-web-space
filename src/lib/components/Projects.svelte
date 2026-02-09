@@ -1,70 +1,58 @@
 <script lang="ts">
   import ProjectCard from './ProjectCard.svelte';
-  import ScrambleText from './ScrambleText.svelte';
-
-  let isVisible = $state(false);
-  let sectionRef: HTMLElement;
-
-  $effect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          isVisible = true;
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
-  });
+  import Reveal from './Reveal.svelte';
 </script>
 
 <section 
   id="projects" 
-  bind:this={sectionRef}
-  class="py-20 pointer-events-auto transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+  class="py-20 pointer-events-auto"
 >
-  <div class="mb-12">
-    <h2 class="section-header">
-      <span class="section-number">01.</span>
-      <span>Project Showcase</span>
-      <div class="section-divider"></div>
-    </h2>
-    <p class="section-description">
-      // Engineering robust systems & automated pipelines
-    </p>
-  </div>
+  <Reveal>
+    <div class="mb-12">
+      <h2 class="section-header">
+        <span class="section-number">01.</span>
+        <span>Project Showcase</span>
+        <div class="section-divider"></div>
+      </h2>
+      <p class="section-description">
+        // Engineering robust systems & automated pipelines
+      </p>
+    </div>
+  </Reveal>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <ProjectCard
-      title="iBudget Finance Savings Platform"
-      description="A smart financial budgeting platform, featuring a dedicated AI microservice (RAG) for personalized advice/insights
-        and a highly automated DevOps pipeline enforcing 80% code coverage."
-      repoUrl="https://github.com/PUP-BSIT/project-appvengers"
-      demoUrl="https://i-budget.site"
-      tags={['Spring Boot', 'Angular', 'GitHub Actions', 'Hostinger VPS', 'AI Microservices', 'Pinecone Vector DB', 'Supabase']}
-      stats={[
-        { label: 'Coverage', value: '80% Enforced', color: 'text-green-400' },
-        { label: 'Security', value: 'JWT + Gitleaks', color: 'text-yellow-400' },
-        { label: 'Architecture', value: 'Microservices', color: 'text-purple-400' },
-        { label: 'Deployment', value: 'CI/CD VPS', color: 'text-blue-400' }
-      ]}
-    />
+    <Reveal delay={200}>
+      <ProjectCard
+        title="iBudget Finance Savings Platform"
+        description="A smart financial budgeting platform, featuring a dedicated AI microservice (RAG) for personalized advice/insights
+          and a highly automated DevOps pipeline enforcing 80% code coverage."
+        repoUrl="https://github.com/PUP-BSIT/project-appvengers"
+        demoUrl="https://i-budget.site"
+        tags={['Spring Boot', 'Angular', 'GitHub Actions', 'Hostinger VPS', 'AI Microservices', 'Pinecone Vector DB', 'Supabase']}
+        stats={[
+          { label: 'Coverage', value: '80% Enforced', color: 'text-green-400' },
+          { label: 'Security', value: 'JWT + Gitleaks', color: 'text-yellow-400' },
+          { label: 'Architecture', value: 'Microservices', color: 'text-purple-400' },
+          { label: 'Deployment', value: 'CI/CD VPS', color: 'text-blue-400' }
+        ]}
+      />
+    </Reveal>
 
-    <ProjectCard
-      title="PawSight Pet Utility Mobile"
-      description="An android utility application for pet care with integrated AI assistance.
-        Built with clean MVVM architecture and forui library offering offline-first capabilities."
-      repoUrl="https://github.com/mejares-jamesmichael/project-pawsight"
-      demoUrl="https://github.com/mejares-jamesmichael/project-pawsight/releases"
-      tags={['Flutter', 'Dart', 'forui', 'AI Microservices', 'SQLite', 'MVVM Architecture']}
-      stats={[
-        { label: 'Platform', value: 'Android', color: 'text-blue-400' },
-        { label: 'AI Model', value: 'Smart-AI', color: 'text-purple-400' },
-        { label: 'State', value: 'Provider', color: 'text-yellow-400' },
-        { label: 'Database', value: 'Local SQLite', color: 'text-green-400' }
-      ]}
-    />
+    <Reveal delay={400}>
+      <ProjectCard
+        title="PawSight Pet Utility Mobile"
+        description="An android utility application for pet care with integrated AI assistance.
+          Built with clean MVVM architecture and forui library offering offline-first capabilities."
+        repoUrl="https://github.com/mejares-jamesmichael/project-pawsight"
+        demoUrl="https://github.com/mejares-jamesmichael/project-pawsight/releases"
+        tags={['Flutter', 'Dart', 'forui', 'AI Microservices', 'SQLite', 'MVVM Architecture']}
+        stats={[
+          { label: 'Platform', value: 'Android', color: 'text-blue-400' },
+          { label: 'AI Model', value: 'Smart-AI', color: 'text-purple-400' },
+          { label: 'State', value: 'Provider', color: 'text-yellow-400' },
+          { label: 'Database', value: 'Local SQLite', color: 'text-green-400' }
+        ]}
+      />
+    </Reveal>
   </div>
 </section>
