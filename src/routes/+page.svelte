@@ -9,7 +9,8 @@
   let autoScramble = $state(false);
 
   $effect(() => {
-    setTimeout(() => autoScramble = true, 500);
+    const timer = setTimeout(() => autoScramble = true, 500);
+    return () => clearTimeout(timer);
   });
 
   function copyEmail() {
