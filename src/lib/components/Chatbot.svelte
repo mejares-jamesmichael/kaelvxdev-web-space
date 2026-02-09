@@ -1,28 +1,12 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
-  import { Send, Terminal, Cpu, ShieldCheck, Globe } from 'lucide-svelte';
+  import { Terminal } from 'lucide-svelte';
+  import Reveal from './Reveal.svelte';
 
   // Chat State
   let inputValue = $state('');
   let isLoading = $state(false);
   let isTyping = $state(false);
   let chatContainer: HTMLDivElement;
-  let isVisible = $state(false);
-  let sectionRef: HTMLElement;
-
-  $effect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          isVisible = true;
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
-  });
 
   type Message = {
     role: 'user' | 'bot';
@@ -56,10 +40,9 @@
       .replace(/\n/g, '<br/>');
   }
 
+  // Auto-scroll when messages change
   $effect(() => {
-    // Only scroll when messages array changes
-    messages;
-    if (chatContainer) {
+    if (chatContainer && messages.length > 0) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   });
@@ -127,157 +110,160 @@
 
 <section
   id="Kali-agent"
-  bind:this={sectionRef}
-  class="pointer-events-auto my-32 w-full transition-all duration-1000 ease-out {isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}"
+  class="pointer-events-auto my-32 w-full"
 >
-  <div class="mb-12">
-    <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
-      <span class="text-[var(--color-primary)]">03.</span>
-      <span>Chat with Kali-Agent</span>
-      <div class="h-px bg-[var(--border-default)] flex-grow ml-4"></div>
-    </h3>
-    <p class="text-[var(--color-secondary)] font-mono text-sm mt-2">
-      // Have questions? chat Kael's kali agent
-    </p>
-  </div>
-
-  <!-- Main Terminal Window -->
-  <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)]/70 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
-
-    <!-- Sidebar / Status Panel (Hidden on small screens) -->
-    <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]/50">
-
-      <!-- Header Area of Sidebar -->
-      <div class="p-4 border-b border-[var(--border-default)]">
-        <div class="text-[16px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
-        <div class="flex items-center gap-2">
-           <div class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></div>
-           <span class="text-xs text-[var(--color-success)] font-mono font-bold">ONLINE</span>
-        </div>
-      </div>
-
-      <!-- Stats Grid (Aligned with ProjectCard style) -->
-      <div class="p-4 space-y-4">
-        <div>
-          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Telemetry</span>
-          <div class="grid gap-y-2 border-y border-[var(--border-default)] py-3">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-[var(--color-secondary)]">LLM Core</span>
-              <span class="text-[var(--color-primary)]">v1.0.4</span>
-            </div>
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-[var(--color-secondary)]">Uptime</span>
-              <span class="text-[var(--color-primary)]">99.9%</span>
-            </div>
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-[var(--color-secondary)]">Latency</span>
-              <span class="text-[var(--color-success)]">24ms</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Quick Access</span>
-          <div class="space-y-1">
-            {#each ['/projects', '/skills', '/contact'] as cmd}
-              <button
-                onclick={() => { inputValue = cmd; handleSubmit(); }}
-                class="w-full text-left px-3 py-2 rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] text-xs font-mono text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all group-item"
-              >
-                <span class="text-[var(--color-primary)] opacity-50 group-item-hover:opacity-100">></span> {cmd}
-              </button>
-            {/each}
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-auto p-4 border-t border-[var(--border-default)] text-[16px] text-[var(--color-secondary)] font-mono text-center">
-        session_id: {Math.random().toString(36).substring(7)}
-      </div>
+  <Reveal>
+    <div class="mb-12">
+      <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
+        <span class="text-[var(--color-primary)]">03.</span>
+        <span>Chat with Kali-Agent</span>
+        <div class="h-px bg-[var(--border-default)] flex-grow ml-4"></div>
+      </h3>
+      <p class="text-[var(--color-secondary)] font-mono text-sm mt-2">
+        // Have questions? chat Kael's kali agent
+      </p>
     </div>
+  </Reveal>
 
-    <!-- Main REPL Area -->
-    <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]/30">
-      <!-- Terminal Header -->
-      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]/50">
-        <div class="flex items-center gap-2">
-          <Terminal class="w-4 h-4 text-[var(--color-secondary)]" />
-          <span class="text-xs font-mono text-[var(--color-secondary)]">kaelvxdev@portfolio:~</span>
+  <Reveal delay={200}>
+    <!-- Main Terminal Window -->
+    <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)]/70 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
+
+      <!-- Sidebar / Status Panel (Hidden on small screens) -->
+      <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]/50">
+
+        <!-- Header Area of Sidebar -->
+        <div class="p-4 border-b border-[var(--border-default)]">
+          <div class="text-[16px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
+          <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></div>
+             <span class="text-xs text-[var(--color-success)] font-mono font-bold">ONLINE</span>
+          </div>
         </div>
-        <!-- Window Controls (ASCII Style) -->
-        <div class="flex gap-4 text-xs font-mono text-[var(--color-secondary)]">
-          <span>[ _ ]</span>
-          <span>[ □ ]</span>
-          <button
-            onclick={clearChat}
-            class="hover:text-red-500 cursor-pointer transition-colors"
-            title="Clear Terminal"
-          >
-            [ x ]
-          </button>
+
+        <!-- Stats Grid (Aligned with ProjectCard style) -->
+        <div class="p-4 space-y-4">
+          <div>
+            <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Telemetry</span>
+            <div class="grid gap-y-2 border-y border-[var(--border-default)] py-3">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-[var(--color-secondary)]">LLM Core</span>
+                <span class="text-[var(--color-primary)]">v1.0.4</span>
+              </div>
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-[var(--color-secondary)]">Uptime</span>
+                <span class="text-[var(--color-primary)]">99.9%</span>
+              </div>
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-[var(--color-secondary)]">Latency</span>
+                <span class="text-[var(--color-success)]">24ms</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Quick Access</span>
+            <div class="space-y-1">
+              {#each ['/projects', '/skills', '/contact'] as cmd}
+                <button
+                  onclick={() => { inputValue = cmd; handleSubmit(); }}
+                  class="w-full text-left px-3 py-2 rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] text-xs font-mono text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all group-item"
+                >
+                  <span class="text-[var(--color-primary)] opacity-50 group-item-hover:opacity-100">></span> {cmd}
+                </button>
+              {/each}
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-auto p-4 border-t border-[var(--border-default)] text-[16px] text-[var(--color-secondary)] font-mono text-center">
+          session_id: {Math.random().toString(36).substring(7)}
         </div>
       </div>
 
-      <!-- Messages Output -->
-      <div
-        bind:this={chatContainer}
-        class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-[var(--border-default)] scrollbar-track-transparent"
-      >
-        {#each messages as msg}
-          <div class="flex flex-col gap-1 group/message p-3 rounded-sm transition-all duration-300 hover:bg-[var(--bg-card)]/40 hover:border-l-2 hover:border-[var(--color-primary)]/50 -ml-3 pl-3">
-            <!-- Message Header -->
-            <div class="flex items-center gap-3 opacity-40 select-none group-hover/message:opacity-100 transition-opacity text-xs">
-              <span class="uppercase tracking-widest">{msg.time}</span>
-              {#if msg.role === 'user'}
-                <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
-              {:else}
-                <span class="text-[var(--color-success)] font-bold">root@system</span>
-              {/if}
-            </div>
-
-            <!-- Message Body -->
-            <div class="{msg.role === 'user' ? 'text-[var(--color-primary)]' : 'text-[var(--color-secondary)]'} pl-0">
-              {#if msg.role === 'user'}
-                <span class="text-[var(--color-primary)] mr-2">$</span>{msg.text}
-              {:else}
-                <div class="border-l-2 border-[var(--border-default)] pl-3 mt-1">
-                  {@html renderMarkdown(msg.text)}
-                  {#if isTyping && messages.indexOf(msg) === messages.length - 1}
-                    <span class="inline-block w-2 h-4 bg-[var(--color-success)] animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
-                  {/if}
-                </div>
-              {/if}
-            </div>
+      <!-- Main REPL Area -->
+      <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]/30">
+        <!-- Terminal Header -->
+        <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]/50">
+          <div class="flex items-center gap-2">
+            <Terminal class="w-4 h-4 text-[var(--color-secondary)]" />
+            <span class="text-xs font-mono text-[var(--color-secondary)]">kaelvxdev@portfolio:~</span>
           </div>
-        {/each}
-
-        {#if isLoading}
-          <div class="flex items-center gap-2 text-[var(--color-secondary)] text-xs pl-0 animate-pulse">
-            <span class="text-[var(--color-success)]">$</span>
-            <span>processing_query...</span>
+          <!-- Window Controls (ASCII Style) -->
+          <div class="flex gap-4 text-xs font-mono text-[var(--color-secondary)]">
+            <span>[ _ ]</span>
+            <span>[ □ ]</span>
+            <button
+              onclick={clearChat}
+              class="hover:text-red-500 cursor-pointer transition-colors"
+              title="Clear Terminal"
+            >
+              [ x ]
+            </button>
           </div>
-        {/if}
-      </div>
+        </div>
 
-      <!-- Input Bar -->
-      <div class="p-4 bg-[var(--bg-card)]/50 border-t border-[var(--border-default)]">
-        <form
-          onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}
-          class="flex items-center gap-3"
+        <!-- Messages Output -->
+        <div
+          bind:this={chatContainer}
+          class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-[var(--border-default)] scrollbar-track-transparent"
         >
-          <span class="text-[var(--color-success)] font-bold font-mono">➜ ~</span>
-          <input
-            bind:value={inputValue}
-            type="text"
-            placeholder={isTyping ? "" : "Enter command..."}
-            disabled={isTyping || isLoading}
-            class="flex-1 bg-transparent outline-none text-[var(--color-primary)] font-mono text-sm placeholder-[var(--color-secondary)] caret-[var(--color-success)]"
-            autocomplete="off"
-            spellcheck="false"
-          />
-        </form>
-      </div>
-    </div>
+          {#each messages as msg}
+            <div class="flex flex-col gap-1 group/message p-3 rounded-sm transition-all duration-300 hover:bg-[var(--bg-card)]/40 hover:border-l-2 hover:border-[var(--color-primary)]/50 -ml-3 pl-3">
+              <!-- Message Header -->
+              <div class="flex items-center gap-3 opacity-40 select-none group-hover/message:opacity-100 transition-opacity text-xs">
+                <span class="uppercase tracking-widest">{msg.time}</span>
+                {#if msg.role === 'user'}
+                  <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
+                {:else}
+                  <span class="text-[var(--color-success)] font-bold">root@system</span>
+                {/if}
+              </div>
 
-  </div>
+              <!-- Message Body -->
+              <div class="{msg.role === 'user' ? 'text-[var(--color-primary)]' : 'text-[var(--color-secondary)]'} pl-0">
+                {#if msg.role === 'user'}
+                  <span class="text-[var(--color-primary)] mr-2">$</span>{msg.text}
+                {:else}
+                  <div class="border-l-2 border-[var(--border-default)] pl-3 mt-1">
+                    {@html renderMarkdown(msg.text)}
+                    {#if isTyping && messages.indexOf(msg) === messages.length - 1}
+                      <span class="inline-block w-2 h-4 bg-[var(--color-success)] animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
+                    {/if}
+                  </div>
+                {/if}
+              </div>
+            </div>
+          {/each}
+
+          {#if isLoading}
+            <div class="flex items-center gap-2 text-[var(--color-secondary)] text-xs pl-0 animate-pulse">
+              <span class="text-[var(--color-success)]">$</span>
+              <span>processing_query...</span>
+            </div>
+          {/if}
+        </div>
+
+        <!-- Input Bar -->
+        <div class="p-4 bg-[var(--bg-card)]/50 border-t border-[var(--border-default)]">
+          <form
+            onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+            class="flex items-center gap-3"
+          >
+            <span class="text-[var(--color-success)] font-bold font-mono">➜ ~</span>
+            <input
+              bind:value={inputValue}
+              type="text"
+              placeholder={isTyping ? "" : "Enter command..."}
+              disabled={isTyping || isLoading}
+              class="flex-1 bg-transparent outline-none text-[var(--color-primary)] font-mono text-sm placeholder-[var(--color-secondary)] caret-[var(--color-success)]"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </Reveal>
 </section>

@@ -120,16 +120,26 @@
     animationFrame = requestAnimationFrame(loop);
   }
 
+  // Initialize canvas and start animation
   $effect(() => {
+    if (!canvas) return;
+    
     ctx = canvas.getContext('2d');
     if (!ctx) return;
+    
     init();
+    
+    return () => cancelAnimationFrame(animationFrame);
+  });
+
+  // Handle window events
+  $effect(() => {
+    if (!canvas) return;
     
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMouseMove);
     
     return () => {
-      cancelAnimationFrame(animationFrame);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
     };
