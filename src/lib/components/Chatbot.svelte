@@ -216,7 +216,7 @@
                 {#if msg.role === 'user'}
                   <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
                 {:else}
-                  <span class="text-[var(--color-success)] font-bold">root@system</span>
+                  <span class="text-[var(--color-success)] font-bold">kali@agent</span>
                 {/if}
               </div>
 
