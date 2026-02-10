@@ -47,21 +47,6 @@
     }
   });
 
-  async function typeText(fullText: string) {
-    const botMsgIndex = messages.length;
-    messages = [...messages, {
-      role: 'bot',
-      text: '',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }];
-
-    for (let i = 0; i < fullText.length; i++) {
-      messages[botMsgIndex].text += fullText[i];
-      messages = messages;
-      await new Promise(r => setTimeout(r, 8)); // Snappy terminal speed
-    }
-  }
-
   function clearChat() {
     messages = [
       {
@@ -89,16 +74,56 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userText })
       });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to connect');
+      }
+
       isLoading = false;
       isTyping = true;
-      await typeText(data.text);
-    } catch (error) {
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      
+      const botMsgIndex = messages.length;
+      messages = [...messages, {
+        role: 'bot',
+        text: '',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }];
+
+      let buffer = '';
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const parsed = JSON.parse(line);
+            if (parsed.type === 'item' && parsed.metadata?.nodeName === 'Respond to Webhook') {
+              const content = JSON.parse(parsed.content);
+              const newText = content.output || content.text || content.message;
+              if (newText) {
+                messages[botMsgIndex].text = newText;
+                messages = [...messages];
+              }
+            }
+          } catch (e) {
+            // Ignore partial JSON
+          }
+        }
+      }
+    } catch (error: any) {
       isLoading = false;
       messages = [...messages, {
         role: 'bot',
-        text: 'Fatal Error: Neural link severed. Check logs.',
+        text: `Fatal Error: ${error.message || 'Neural link severed'}. Check logs.`,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }];
     } finally {
@@ -106,6 +131,7 @@
       isTyping = false;
     }
   }
+
 </script>
 
 <section

@@ -3,17 +3,45 @@ import { dev } from '$app/environment';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ request }) => {
+// Simple memory-based rate limiter
+const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
+const RATE_LIMIT = 10; // requests
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    return false;
+  }
+
+  if (record.count >= RATE_LIMIT) {
+    return true;
+  }
+
+  record.count++;
+  return false;
+}
+
+export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   try {
+    const ip = getClientAddress();
+    if (isRateLimited(ip)) {
+      return json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     const { message } = await request.json();
 
-    if (!message) {
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return json({ error: 'Message is required' }, { status: 400 });
     }
 
-    const webhookUrl = env.N8N_WEBHOOK_URL;
+    // Basic sanitization
+    const sanitizedMessage = message.trim().substring(0, 1000);
 
-    if (dev) console.log('[Chat API] Webhook URL:', webhookUrl ? 'SET' : 'NOT SET');
+    const webhookUrl = env.N8N_WEBHOOK_URL;
 
     if (!webhookUrl) {
       console.error('[Chat API] N8N_WEBHOOK_URL environment variable is not set');
@@ -22,60 +50,32 @@ export const POST: RequestHandler = async ({ request }) => {
 
     if (dev) {
       console.log('[Chat API] Sending request to n8n webhook');
-      console.log('[Chat API] Message:', message);
     }
-
-    // Add timeout to prevent hanging
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatInput: message }),
-      signal: controller.signal
+      body: JSON.stringify({ chatInput: sanitizedMessage }),
     });
-
-    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Chat API] n8n error:', response.status, errorText);
-      throw new Error(`n8n responded with ${response.status}: ${errorText}`);
+      return json({ error: 'Failed to communicate with AI core.' }, { status: 500 });
     }
 
-    // n8n returns streaming NDJSON (newline-delimited JSON)
-    const responseText = await response.text();
-    if (dev) console.log('[Chat API] Received response text length:', responseText.length);
-    
-    let botText = "Response received.";
-    
-    // Parse streaming response - look for the last "Respond to Webhook" item
-    const lines = responseText.trim().split('\n');
-    if (dev) console.log('[Chat API] Received', lines.length, 'lines');
-    
-    // Find the last line with type "item" from "Respond to Webhook"
-    for (let i = lines.length - 1; i >= 0; i--) {
-      try {
-        const line = JSON.parse(lines[i]);
-        if (line.type === 'item' && line.metadata?.nodeName === 'Respond to Webhook') {
-          // Parse the content which is a JSON string
-          const content = JSON.parse(line.content);
-          botText = content.output || content.text || content.message || botText;
-          if (dev) console.log('[Chat API] Found response in line', i);
-          break;
-        }
-      } catch (e) {
-        // Skip invalid JSON lines
-        continue;
+    // Proxy the stream from n8n to the client
+    return new Response(response.body, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
       }
-    }
-
-    if (dev) console.log('[Chat API] Returning bot text length:', botText.length);
-    return json({ text: botText });
+    });
 
   } catch (error) {
     console.error('[Chat API] Error:', error);
-    return json({ error: 'Failed to communicate with AI core.' }, { status: 500 });
+    return json({ error: 'Internal server error.' }, { status: 500 });
   }
 };
+
