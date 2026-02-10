@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { config } from '$lib/config';
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
@@ -14,7 +15,7 @@
   });
 
   function copyEmail() {
-    navigator.clipboard.writeText('jamesmichaelmejares@gmail.com');
+    navigator.clipboard.writeText(config.email);
     emailCopied = true;
     setTimeout(() => {
       emailCopied = false;
@@ -42,11 +43,11 @@
   <!-- MAIN HERO CONTENT -->
   <main class="max-w-2xl pointer-events-auto mb-32">
     <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 font-mono tracking-tight">
-      <ScrambleText text="James Michael" hoverTrigger={false} autoPlay={autoScramble} />
+      <ScrambleText text={config.name} hoverTrigger={false} autoPlay={autoScramble} />
     </h1>
 
     <h2 class="text-2xl md:text-3xl font-semibold mb-8 font-mono bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
-      Backend & DevOps Engineer
+      {config.title}
     </h2>
 
     <div class="space-y-6 text-lg md:text-xl font-normal leading-relaxed text-gray-200">
@@ -57,11 +58,10 @@
       </p>
 
       <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
-        <span class="text-white"><ScrambleText text="Linux" /></span> •
-        <span class="text-white"><ScrambleText text="AWS" /></span> •
-        <span class="text-white"><ScrambleText text="CI/CD" /></span> •
-        <span class="text-white"><ScrambleText text="Docker" /></span> •
-        <span class="text-white"><ScrambleText text="GitHub Actions" /></span>
+        {#each config.skills as skill, i}
+          <span class="text-white"><ScrambleText text={skill} /></span>
+          {#if i < config.skills.length - 1} • {/if}
+        {/each}
       </p>
     </div>
 
@@ -73,7 +73,7 @@
       <a href="#skills" class="btn text-white">
         Skills
       </a>
-      <a href="/James-Michael-Mejares.pdf" download="James-Michael-Mejares.pdf" class="btn text-white">
+      <a href={config.cvPath} download={config.cvPath.split('/').pop()} class="btn text-white">
         Download CV
       </a>
     </div>
@@ -86,11 +86,12 @@
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
     <div class="flex flex-wrap gap-8 text-sm font-semibold text-white font-mono">
-      <a href="https://github.com/mejares-jamesmichael" target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
-      <a href="https://linktr.ee/kaelvxd" target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
+      <a href={config.socials.github} target="_blank" class="hover:text-gray-400 transition-colors">GitHub</a>
+      <a href={config.socials.linktree} target="_blank" class="hover:text-gray-400 transition-colors">Linktree</a>
       <button onclick={copyEmail} class="hover:text-gray-400 transition-colors">
         {emailCopied ? 'Copied!' : 'Email'}
       </button>
     </div>
   </footer>
 </div>
+
