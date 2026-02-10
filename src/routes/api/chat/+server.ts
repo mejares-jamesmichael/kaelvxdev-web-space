@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { dev } from '$app/environment';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
@@ -12,15 +13,17 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const webhookUrl = env.N8N_WEBHOOK_URL;
 
-    console.log('[Chat API] Webhook URL:', webhookUrl ? 'SET' : 'NOT SET');
+    if (dev) console.log('[Chat API] Webhook URL:', webhookUrl ? 'SET' : 'NOT SET');
 
     if (!webhookUrl) {
       console.error('[Chat API] N8N_WEBHOOK_URL environment variable is not set');
       return json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    console.log('[Chat API] Sending request to n8n webhook');
-    console.log('[Chat API] Message:', message);
+    if (dev) {
+      console.log('[Chat API] Sending request to n8n webhook');
+      console.log('[Chat API] Message:', message);
+    }
 
     // Add timeout to prevent hanging
     const controller = new AbortController();
@@ -43,13 +46,13 @@ export const POST: RequestHandler = async ({ request }) => {
 
     // n8n returns streaming NDJSON (newline-delimited JSON)
     const responseText = await response.text();
-    console.log('[Chat API] Received response text length:', responseText.length);
+    if (dev) console.log('[Chat API] Received response text length:', responseText.length);
     
     let botText = "Response received.";
     
     // Parse streaming response - look for the last "Respond to Webhook" item
     const lines = responseText.trim().split('\n');
-    console.log('[Chat API] Received', lines.length, 'lines');
+    if (dev) console.log('[Chat API] Received', lines.length, 'lines');
     
     // Find the last line with type "item" from "Respond to Webhook"
     for (let i = lines.length - 1; i >= 0; i--) {
@@ -59,7 +62,7 @@ export const POST: RequestHandler = async ({ request }) => {
           // Parse the content which is a JSON string
           const content = JSON.parse(line.content);
           botText = content.output || content.text || content.message || botText;
-          console.log('[Chat API] Found response in line', i);
+          if (dev) console.log('[Chat API] Found response in line', i);
           break;
         }
       } catch (e) {
@@ -68,7 +71,7 @@ export const POST: RequestHandler = async ({ request }) => {
       }
     }
 
-    console.log('[Chat API] Returning bot text length:', botText.length);
+    if (dev) console.log('[Chat API] Returning bot text length:', botText.length);
     return json({ text: botText });
 
   } catch (error) {
