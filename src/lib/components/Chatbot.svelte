@@ -8,6 +8,8 @@
   let isTyping = $state(false);
   let chatContainer: HTMLDivElement;
 
+  const sessionId = Math.random().toString(36).substring(7);
+
   type Message = {
     role: 'user' | 'bot';
     text: string;
@@ -203,7 +205,7 @@
         </div>
 
         <div class="mt-auto p-4 border-t border-[var(--border-default)] text-[16px] text-[var(--color-secondary)] font-mono text-center">
-          session_id: {Math.random().toString(36).substring(7)}
+          session_id: {sessionId}
         </div>
       </div>
 
