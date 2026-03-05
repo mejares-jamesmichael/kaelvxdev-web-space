@@ -119,11 +119,12 @@
           }
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       isLoading = false;
+      const errorMessage = (error instanceof Error && error.message) || 'Neural link severed';
       messages = [...messages, {
         role: 'bot',
-        text: `Fatal Error: ${error.message || 'Neural link severed'}. Check logs.`,
+        text: `Fatal Error: ${errorMessage}. Check logs.`,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }];
     } finally {
