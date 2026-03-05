@@ -41,17 +41,35 @@
 
   // --- Chat Logic ---
   function renderMarkdown(text: string): string {
-    return text
-      // Code blocks: sharper corners, darker bg, slate border
+    // 1. Escape HTML special characters to prevent XSS
+    const escaped = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    // 2. Safely re-introduce controlled HTML for markdown features
+    return escaped
+      // Code blocks: Use pre-defined classes, code content is already escaped
       .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm p-4 my-3 overflow-x-auto text-xs font-mono text-[var(--color-success)] shadow-inner"><code>$2</code></pre>')
-      // Inline code: sharper corners, subtle bg
+      // Inline code
       .replace(/`([^`]+)`/g, '<code class="bg-[var(--bg-card)] px-1.5 py-0.5 rounded-sm text-xs font-mono text-[var(--color-primary)] border border-[var(--border-default)]">$1</code>')
       // Headers: Technical, uppercase, mono
       .replace(/^### (.+)$/gm, '<strong class="block text-[var(--color-primary)] mt-6 mb-2 font-mono text-xs tracking-widest uppercase border-b border-[var(--border-default)] pb-1">$1</strong>')
       // Bold: White contrast
       .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-      // Links: Blue, underline on hover
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-[var(--color-primary)] hover:text-[var(--color-secondary)] hover:underline transition-colors">$1</a>')
+      // Links: Validate URL protocol to prevent javascript: and other dangerous schemes
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+        // Decode common entities to check the protocol accurately
+        const decodedUrl = url.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+        // Allow only safe protocols or relative paths
+        if (/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(decodedUrl)) {
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:text-[var(--color-secondary)] hover:underline transition-colors">${label}</a>`;
+        }
+        // If protocol is unsafe, render as plain text
+        return `[${label}](${url})`;
+      })
       // Lists: Custom marker
       .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-none relative pl-4 text-[var(--color-secondary)] mb-1 before:content-[\'-\'] before:absolute before:left-0 before:text-[var(--color-secondary)]">$1</li>')
       .replace(/\n/g, '<br/>');
