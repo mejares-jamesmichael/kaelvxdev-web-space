@@ -73,8 +73,8 @@
   </main>
 
   <Projects />
-  <GitHubStats />
   <Skills />
+  <GitHubStats />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
