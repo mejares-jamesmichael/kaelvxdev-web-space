@@ -1,0 +1,171 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #9ca3af;
+  --color-secondary: #6b7280;
+  --color-success: #4ade80;
+  --color-accent: #d1d5db;
+  --border-default: #1f2937;
+  --border-hover: rgba(156, 163, 175, 0.4);
+  --bg-card: rgba(0, 0, 0, 0.5);
+  --bg-card-hover: rgba(0, 0, 0, 0.7);
+  --glow-sm: 0 0 20px rgba(156, 163, 175, 0.1);
+  --glow-md: 0 0 30px rgba(156, 163, 175, 0.15);
+  --glow-lg: 0 0 40px rgba(156, 163, 175, 0.2);
+  --section-spacing: 5rem;
+  --section-gap: 3rem;
+  --radius-sm: 0.125rem;
+  --transition-default: all 300ms ease-out;
+  --transition-slow: all 500ms ease-out;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .card {
+    @apply p-6 border rounded-sm bg-black/50;
+    border-color: var(--border-default);
+    transition: var(--transition-default);
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--glow-md);
+    transform: translateY(-4px);
+  }
+  .section-header {
+    @apply text-3xl font-bold text-white mb-4 font-mono flex items-center gap-4;
+  }
+  .section-number {
+    @apply text-gray-400;
+  }
+  .section-divider {
+    @apply h-px bg-gray-800 flex-grow ml-4;
+  }
+  .section-description {
+    @apply text-gray-400 font-mono text-sm;
+  }
+  .btn {
+    @apply px-6 py-3 border rounded-sm font-medium font-mono transition-all duration-300;
+    border-color: var(--border-default);
+  }
+  .btn:hover {
+    @apply bg-white text-black;
+    border-color: #ffffff;
+  }
+  .glow-card {
+    position: relative;
+  }
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(156, 163, 175, 0), rgba(107, 114, 128, 0));
+    transition: var(--transition-slow);
+    pointer-events: none;
+    border-radius: var(--radius-sm);
+  }
+  .glow-card:hover::before {
+    background: linear-gradient(135deg, rgba(156, 163, 175, 0.03), rgba(107, 114, 128, 0.03));
+  }
+}
+
+@layer utilities {
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes drift {
+  0% { transform: translateZ(0) translate(0, 0); }
+  33% { transform: translateZ(0) translate(var(--drift-x, 15px), calc(var(--drift-y, -10px) * -1)); }
+  66% { transform: translateZ(0) translate(calc(var(--drift-x, 15px) * -0.6), var(--drift-y, -10px)); }
+  100% { transform: translateZ(0) translate(calc(var(--drift-x, 15px) * 0.4), calc(var(--drift-y, -10px) * 0.7)); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes linePulse {
+  0% { stroke-opacity: 0.04; }
+  100% { stroke-opacity: 0.1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,29 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = 'James Michael | Backend & DevOps Engineer' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content="Backend & DevOps Engineer - Automating deployments, building reliable backend systems, and optimizing cloud infrastructure." />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="min-h-screen bg-black text-white selection:bg-white selection:text-black relative">
+      <div class="fixed inset-0 bg-[radial-gradient(circle_at_80%_0%,_#1c1c1c_0%,_#000000_70%)] pointer-events-none z-0"></div>
+      <div class="fixed inset-0 opacity-[0.04] pointer-events-none z-0 mix-blend-overlay"
+           style="background-image: url('/noise.svg'); background-repeat: repeat; background-size: 128px;"></div>
+      <div class="relative z-10">
+        <slot />
+      </div>
+    </div>
+  </body>
+</html>
