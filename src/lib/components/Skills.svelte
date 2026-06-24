@@ -1,24 +1,16 @@
 <script lang="ts">
   const skills = [
     { 
-      category: "Backend", 
-      items: ['Laravel 12', 'Spring Boot', 'PHP', 'Node.js']
-    },
-    { 
-      category: "Frontend & Mobile", 
-      items: ['Angular 21', 'Flutter', 'Dart', 'Svelte']
+      category: "Full Stack Development", 
+      items: ['Laravel 12', 'Spring Boot', 'Angular 21', 'Flutter', 'PHP', 'Node.js']
     },
     { 
       category: "DevOps & Cloud", 
-      items: ['Docker', 'GitHub Actions', 'AWS', 'VPS Deployment']
+      items: ['Docker', 'GitHub Actions', 'AWS', 'MySQL', 'SQLite']
     },
     { 
-      category: "AI & Data", 
-      items: ['Python', 'OpenCV', 'Groq AI', 'MySQL', 'SQLite']
-    },
-    { 
-      category: "Scripting & Tools", 
-      items: ['PowerShell', 'Lua', 'Bash', 'Neovim']
+      category: "AI & Tools", 
+      items: ['Python', 'OpenCV', 'Groq AI', 'PowerShell', 'Lua', 'Neovim']
     }
   ];
 </script>
