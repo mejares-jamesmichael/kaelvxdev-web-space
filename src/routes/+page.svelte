@@ -1,18 +1,10 @@
 <script lang="ts">
   import { config } from '$lib/config';
   import GeometricLines from '$lib/components/GeometricLines.svelte';
-  import ScrambleText from '$lib/components/ScrambleText.svelte';
   import Projects from '$lib/components/Projects.svelte';
   import Skills from '$lib/components/Skills.svelte';
-  import Chatbot from '$lib/components/Chatbot.svelte';
 
   let emailCopied = $state(false);
-  let autoScramble = $state(false);
-
-  $effect(() => {
-    const timer = setTimeout(() => autoScramble = true, 500);
-    return () => clearTimeout(timer);
-  });
 
   function copyEmail() {
     navigator.clipboard.writeText(config.email);
@@ -43,23 +35,23 @@
   <!-- MAIN HERO CONTENT -->
   <main class="max-w-2xl pointer-events-auto mb-32">
     <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 font-mono tracking-tight">
-      <ScrambleText text={config.name} hoverTrigger={false} autoPlay={autoScramble} />
+      {config.name}
     </h1>
 
-    <h2 class="text-2xl md:text-3xl font-semibold mb-8 font-mono bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
+    <h2 class="text-2xl md:text-3xl font-semibold mb-8 font-mono text-gray-400">
       {config.title}
     </h2>
 
     <div class="space-y-6 text-lg md:text-xl font-normal leading-relaxed text-gray-200">
       <p>
-        I automate <span class="text-white"><ScrambleText text="deployments," /></span> build reliable
-            <span class="text-white"><ScrambleText text="backend systems," /></span> and optimize
-            <span class="text-white"><ScrambleText text="cloud infrastructure." /></span>
+        I automate <span class="text-white">deployments,</span> build reliable
+        <span class="text-white">backend systems,</span> and optimize
+        <span class="text-white">cloud infrastructure.</span>
       </p>
 
       <p class="text-base md:text-lg text-gray-400 flex flex-wrap gap-2 items-center font-mono">
         {#each config.skills as skill, i}
-          <span class="text-white"><ScrambleText text={skill} /></span>
+          <span class="text-white">{skill}</span>
           {#if i < config.skills.length - 1} • {/if}
         {/each}
       </p>
@@ -81,7 +73,6 @@
 
   <Projects />
   <Skills />
-  <Chatbot />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
@@ -94,4 +85,3 @@
     </div>
   </footer>
 </div>
-
