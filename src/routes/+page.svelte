@@ -2,6 +2,7 @@
   import { config } from '$lib/config';
   import GeometricLines from '$lib/components/GeometricLines.svelte';
   import Projects from '$lib/components/Projects.svelte';
+  import GitHubStats from '$lib/components/GitHubStats.svelte';
   import Skills from '$lib/components/Skills.svelte';
 
   let emailCopied = $state(false);
@@ -72,6 +73,7 @@
   </main>
 
   <Projects />
+  <GitHubStats />
   <Skills />
 
   <!-- FOOTER (Bottom Left) -->
