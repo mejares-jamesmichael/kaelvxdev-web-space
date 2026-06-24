@@ -46,7 +46,7 @@ const iconPaths: Record<string, string> = {
 ---
 
 <section id="skills" class="py-20 pointer-events-auto">
-  <div class="mb-12 reveal">
+  <div class="mb-12 reveal-left">
     <h2 class="section-header">
       <span class="section-number">02.</span>
       <span>Technology Stack</span>
@@ -86,5 +86,5 @@ const iconPaths: Record<string, string> = {
     },
     { threshold: 0.1 }
   );
-  document.querySelectorAll('#skills .reveal').forEach((el) => observer.observe(el));
+  document.querySelectorAll('#skills .reveal, #skills .reveal-left').forEach((el) => observer.observe(el));
 </script>
