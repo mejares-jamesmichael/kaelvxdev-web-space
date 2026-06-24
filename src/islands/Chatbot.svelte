@@ -1,0 +1,259 @@
+<script lang="ts">
+  let inputValue = $state('');
+  let isLoading = $state(false);
+  let isTyping = $state(false);
+  let chatContainer: HTMLDivElement;
+
+  type Message = {
+    role: 'user' | 'bot';
+    text: string;
+    time: string;
+  };
+
+  let messages = $state<Message[]>([
+    {
+      role: 'bot',
+      text: "Welcome to the kali REPL \n\nI am a neural-linked agent trained on James's technical expertise. You can ask me about his personal life, education, work experience, skills, projects, or appoint a schedule.",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+  ]);
+
+  function renderMarkdown(text: string): string {
+    return text
+      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre class="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-sm p-4 my-3 overflow-x-auto text-xs font-mono text-[var(--color-success)] shadow-inner"><code>$2</code></pre>')
+      .replace(/`([^`]+)`/g, '<code class="bg-[var(--bg-card)] px-1.5 py-0.5 rounded-sm text-xs font-mono text-[var(--color-primary)] border border-[var(--border-default)]">$1</code>')
+      .replace(/^### (.+)$/gm, '<strong class="block text-[var(--color-primary)] mt-6 mb-2 font-mono text-xs tracking-widest uppercase border-b border-[var(--border-default)] pb-1">$1</strong>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-[var(--color-primary)] hover:text-[var(--color-secondary)] hover:underline transition-colors">$1</a>')
+      .replace(/^[-*] (.+)$/gm, '<li class="ml-4 list-none relative pl-4 text-[var(--color-secondary)] mb-1 before:content-[\'-\'] before:absolute before:left-0 before:text-[var(--color-secondary)]">$1</li>')
+      .replace(/\n/g, '<br/>');
+  }
+
+  $effect(() => {
+    if (chatContainer && messages.length > 0) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  });
+
+  function clearChat() {
+    messages = [
+      {
+        role: 'bot',
+        text: 'Console cleared. System ready.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+    ];
+  }
+
+  async function handleSubmit() {
+    if (!inputValue.trim() || isLoading || isTyping) return;
+    const userText = inputValue;
+    messages = [...messages, {
+      role: 'user',
+      text: userText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }];
+    inputValue = '';
+    isLoading = true;
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userText })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to connect');
+      }
+
+      isLoading = false;
+      isTyping = true;
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      const botMsgIndex = messages.length;
+      messages = [...messages, {
+        role: 'bot',
+        text: '',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }];
+
+      let buffer = '';
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const parsed = JSON.parse(line);
+            if (parsed.type === 'item' && parsed.metadata?.nodeName === 'Respond to Webhook') {
+              const content = JSON.parse(parsed.content);
+              const newText = content.output || content.text || content.message;
+              if (newText) {
+                messages[botMsgIndex].text = newText;
+                messages = [...messages];
+              }
+            }
+          } catch (e) {
+            // Ignore partial JSON
+          }
+        }
+      }
+    } catch (error: any) {
+      isLoading = false;
+      messages = [...messages, {
+        role: 'bot',
+        text: `Fatal Error: ${error.message || 'Neural link severed'}. Check logs.`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }];
+    } finally {
+      isLoading = false;
+      isTyping = false;
+    }
+  }
+</script>
+
+<section id="Kali-agent" class="pointer-events-auto my-32 w-full">
+  <div class="mb-12">
+    <h3 class="text-3xl font-bold text-white font-mono flex items-center gap-4">
+      <span class="text-[var(--color-primary)]">03.</span>
+      <span>Chat with Kali-Agent</span>
+      <div class="h-px bg-[var(--border-default)] flex-grow ml-4"></div>
+    </h3>
+    <p class="text-[var(--color-secondary)] font-mono text-sm mt-2">
+      // Have questions? chat Kael's kali agent
+    </p>
+  </div>
+
+  <div class="rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)]/70 backdrop-blur-md shadow-2xl flex flex-col md:flex-row h-[600px] overflow-hidden group hover:border-[var(--border-hover)] transition-colors duration-300">
+    <div class="hidden md:flex w-64 border-r border-[var(--border-default)] flex-col bg-[var(--bg-card)]/50">
+      <div class="p-4 border-b border-[var(--border-default)]">
+        <div class="text-[16px] font-mono text-[var(--color-secondary)] uppercase tracking-widest mb-1">System Status</div>
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></div>
+          <span class="text-xs text-[var(--color-success)] font-mono font-bold">ONLINE</span>
+        </div>
+      </div>
+
+      <div class="p-4 space-y-4">
+        <div>
+          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Telemetry</span>
+          <div class="grid gap-y-2 border-y border-[var(--border-default)] py-3">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-[var(--color-secondary)]">LLM Core</span>
+              <span class="text-[var(--color-primary)]">v1.0.4</span>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-[var(--color-secondary)]">Uptime</span>
+              <span class="text-[var(--color-primary)]">99.9%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-[var(--color-secondary)]">Latency</span>
+              <span class="text-[var(--color-success)]">24ms</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-mono text-[var(--color-secondary)] uppercase tracking-widest block mb-2">Quick Access</span>
+          <div class="space-y-1">
+            {#each ['/projects', '/skills', '/contact'] as cmd}
+              <button
+                onclick={() => { inputValue = cmd; handleSubmit(); }}
+                class="w-full text-left px-3 py-2 rounded-sm border border-[var(--border-default)] bg-[var(--bg-card)] text-xs font-mono text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all group-item"
+              >
+                <span class="text-[var(--color-primary)] opacity-50 group-item-hover:opacity-100">&gt;</span> {cmd}
+              </button>
+            {/each}
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-auto p-4 border-t border-[var(--border-default)] text-[16px] text-[var(--color-secondary)] font-mono text-center">
+        session_id: {Math.random().toString(36).substring(7)}
+      </div>
+    </div>
+
+    <div class="flex-1 flex flex-col relative bg-[var(--bg-card)]/30">
+      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--border-default)] bg-[var(--bg-card)]/50">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-[var(--color-secondary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span class="text-xs font-mono text-[var(--color-secondary)]">kaelvxdev@portfolio:~</span>
+        </div>
+        <div class="flex gap-4 text-xs font-mono text-[var(--color-secondary)]">
+          <span>[ _ ]</span>
+          <span>[ □ ]</span>
+          <button onclick={clearChat} class="hover:text-red-500 cursor-pointer transition-colors" title="Clear Terminal">
+            [ x ]
+          </button>
+        </div>
+      </div>
+
+      <div
+        bind:this={chatContainer}
+        class="flex-1 overflow-y-auto p-6 font-mono text-sm leading-relaxed space-y-6 scrollbar-thin scrollbar-thumb-[var(--border-default)] scrollbar-track-transparent"
+      >
+        {#each messages as msg}
+          <div class="flex flex-col gap-1 group/message p-3 rounded-sm transition-all duration-300 hover:bg-[var(--bg-card)]/40 hover:border-l-2 hover:border-[var(--color-primary)]/50 -ml-3 pl-3">
+            <div class="flex items-center gap-3 opacity-40 select-none group-hover/message:opacity-100 transition-opacity text-xs">
+              <span class="uppercase tracking-widest">{msg.time}</span>
+              {#if msg.role === 'user'}
+                <span class="text-[var(--color-primary)] font-bold">visitor@web</span>
+              {:else}
+                <span class="text-[var(--color-success)] font-bold">kali@agent</span>
+              {/if}
+            </div>
+
+            <div class="{msg.role === 'user' ? 'text-[var(--color-primary)]' : 'text-[var(--color-secondary)]'} pl-0">
+              {#if msg.role === 'user'}
+                <span class="text-[var(--color-primary)] mr-2">$</span>{msg.text}
+              {:else}
+                <div class="border-l-2 border-[var(--border-default)] pl-3 mt-1">
+                  {@html renderMarkdown(msg.text)}
+                  {#if isTyping && messages.indexOf(msg) === messages.length - 1}
+                    <span class="inline-block w-2 h-4 bg-[var(--color-success)] animate-pulse ml-1 align-middle after:content-['▌'] after:animate-blink"></span>
+                  {/if}
+                </div>
+              {/if}
+            </div>
+          </div>
+        {/each}
+
+        {#if isLoading}
+          <div class="flex items-center gap-2 text-[var(--color-secondary)] text-xs pl-0 animate-pulse">
+            <span class="text-[var(--color-success)]">$</span>
+            <span>processing_query...</span>
+          </div>
+        {/if}
+      </div>
+
+      <div class="p-4 bg-[var(--bg-card)]/50 border-t border-[var(--border-default)]">
+        <form
+          onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+          class="flex items-center gap-3"
+        >
+          <span class="text-[var(--color-success)] font-bold font-mono">~$</span>
+          <input
+            bind:value={inputValue}
+            type="text"
+            placeholder={isTyping ? "" : "Enter command..."}
+            disabled={isTyping || isLoading}
+            class="flex-1 bg-transparent outline-none text-[var(--color-primary)] font-mono text-sm placeholder-[var(--color-secondary)] caret-[var(--color-success)]"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
