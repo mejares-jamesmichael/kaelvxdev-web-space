@@ -1,0 +1,90 @@
+---
+const skills = [
+  {
+    category: "Core Tech",
+    items: [
+      { name: 'Angular', icon: 'layout' },
+      { name: 'Flutter', icon: 'smartphone' },
+      { name: 'Docker', icon: 'container' },
+      { name: 'Linux', icon: 'terminal' },
+      { name: 'Git / GitHub', icon: 'git-branch' },
+    ]
+  },
+  {
+    category: "Cloud & DevOps",
+    items: [
+      { name: 'AWS (EC2)', icon: 'cloud' },
+      { name: 'Spring Boot', icon: 'zap' },
+      { name: 'n8n Automation', icon: 'file-code' },
+      { name: 'Bash Scripting', icon: 'command' },
+    ]
+  },
+  {
+    category: "Other Skills",
+    items: [
+      { name: 'Python', icon: 'code' },
+      { name: 'PHP', icon: 'code' },
+      { name: 'SQL', icon: 'database' },
+      { name: 'PowerShell', icon: 'terminal' },
+    ]
+  }
+];
+
+const iconPaths: Record<string, string> = {
+  'layout': '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line>',
+  'smartphone': '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line>',
+  'container': '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>',
+  'terminal': '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line>',
+  'git-branch': '<line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path>',
+  'cloud': '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>',
+  'zap': '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+  'file-code': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+  'command': '<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>',
+  'code': '<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>',
+  'database': '<ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>',
+};
+---
+
+<section id="skills" class="py-20 pointer-events-auto">
+  <div class="mb-12 reveal">
+    <h2 class="section-header">
+      <span class="section-number">02.</span>
+      <span>Technology Stack</span>
+      <div class="section-divider"></div>
+    </h2>
+    <p class="section-description">// Tools & technologies I use to build and deploy</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {skills.map((group, i) => (
+      <div class="reveal card glow-card cursor-default h-full" style={`transition-delay: ${i * 200}ms`}>
+        <h3 class="text-xl font-bold text-white mb-6 font-mono border-b border-gray-800 pb-2">
+          {group.category}
+        </h3>
+        <div class="space-y-4 relative z-10">
+          {group.items.map((skill) => (
+            <div class="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 cursor-pointer group">
+              <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-300 transition-all duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths[skill.icon]} />
+              <span class="font-mono text-sm">{skill.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('#skills .reveal').forEach((el) => observer.observe(el));
+</script>

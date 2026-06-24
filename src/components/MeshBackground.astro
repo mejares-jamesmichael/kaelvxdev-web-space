@@ -1,0 +1,87 @@
+---
+const NODE_COUNT = 12;
+const nodes = Array.from({ length: NODE_COUNT }, () => ({
+  x: Math.random() * 60 + 40,
+  y: Math.random() * 100,
+  size: Math.random() * 3 + 3,
+  delay: Math.random() * 8,
+  duration: Math.random() * 10 + 15,
+  driftX: (Math.random() - 0.5) * 40,
+  driftY: (Math.random() - 0.5) * 30,
+}));
+---
+
+<div class="mesh-bg mounted" aria-hidden="true">
+  <svg class="mesh-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+    {nodes.map((node, i) =>
+      nodes.map((other, j) =>
+        j > i ? (
+          <line
+            x1={node.x}
+            y1={node.y}
+            x2={other.x}
+            y2={other.y}
+            class="mesh-line"
+            style={`--delay: ${node.delay + other.delay}s; --duration: ${node.duration + other.duration}s`}
+          />
+        ) : null
+      )
+    )}
+  </svg>
+
+  {nodes.map((node) => (
+    <div
+      class="mesh-node"
+      style={`
+        left: ${node.x}%;
+        top: ${node.y}%;
+        width: ${node.size}px;
+        height: ${node.size}px;
+        --delay: ${node.delay}s;
+        --duration: ${node.duration}s;
+        --drift-x: ${node.driftX}px;
+        --drift-y: ${node.driftY}px;
+      `}
+    ></div>
+  ))}
+</div>
+
+<style>
+  .mesh-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-out;
+  }
+  .mesh-bg.mounted {
+    opacity: 1;
+  }
+  .mesh-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .mesh-line {
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 0.08;
+    animation: linePulse var(--duration, 12s) ease-in-out var(--delay, 0s) infinite alternate;
+  }
+  .mesh-node {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.35);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+    animation:
+      drift var(--duration, 20s) ease-in-out var(--delay, 0s) infinite alternate,
+      pulse 4s ease-in-out var(--delay, 0s) infinite;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mesh-node { animation: none; opacity: 0.35; }
+    .mesh-line { animation: none; stroke-opacity: 0.06; }
+  }
+</style>
