@@ -61,5 +61,44 @@
         { label: 'Testing', value: 'Pest + Vitest', color: 'text-green-400' }
       ]}
     />
+
+    <ProjectCard
+      title="Gesture to LLM"
+      description="A real-time hand gesture recognition system that lets you communicate with an LLM using sign language gestures via webcam."
+      repoUrl="https://github.com/mejares-jamesmichael/sl-llm"
+      tags={['Python', 'OpenCV', 'MediaPipe', 'NumPy', 'Webhooks']}
+      stats={[
+        { label: 'Detection', value: 'Real-time CV', color: 'text-green-400' },
+        { label: 'Gestures', value: '5 Mapped', color: 'text-purple-400' },
+        { label: 'Architecture', value: 'Modular', color: 'text-blue-400' },
+        { label: 'Threading', value: 'Non-blocking', color: 'text-yellow-400' }
+      ]}
+    />
+
+    <ProjectCard
+      title="Windows Dotfiles"
+      description="Personal Windows development environment featuring tiling window manager, Neovim config, and custom terminal setups."
+      repoUrl="https://github.com/mejares-jamesmichael/windows-dotfiles"
+      tags={['Lua', 'PowerShell', 'Neovim', 'Komorebi', 'Alacritty', 'WezTerm']}
+      stats={[
+        { label: 'Window Manager', value: 'Komorebi', color: 'text-blue-400' },
+        { label: 'Editor', value: 'Neovim', color: 'text-green-400' },
+        { label: 'Shell', value: 'PowerShell', color: 'text-yellow-400' },
+        { label: 'Terminals', value: '3 Configs', color: 'text-purple-400' }
+      ]}
+    />
+
+    <ProjectCard
+      title="PowerShell Disk Analyzer"
+      description="A PowerShell GUI application for disk usage analysis and automated cleanup with file preview and safe mode."
+      repoUrl="https://github.com/mejares-jamesmichael/OS-PROJECT-Powershell-GUI"
+      tags={['PowerShell', 'Windows GUI', 'Scripting', 'System Admin']}
+      stats={[
+        { label: 'Interface', value: 'GUI App', color: 'text-purple-400' },
+        { label: 'Features', value: 'Scan + Clean', color: 'text-green-400' },
+        { label: 'Safety', value: 'File Preview', color: 'text-yellow-400' },
+        { label: 'License', value: 'MIT', color: 'text-blue-400' }
+      ]}
+    />
   </div>
 </section>
