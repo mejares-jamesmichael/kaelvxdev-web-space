@@ -1,16 +1,24 @@
 <script lang="ts">
   const skills = [
     { 
-      category: "Core Tech", 
-      items: ['Angular', 'Flutter', 'Docker', 'Linux', 'Git / GitHub']
+      category: "Backend", 
+      items: ['Laravel 12', 'Spring Boot', 'PHP', 'Node.js']
     },
     { 
-      category: "Cloud & DevOps", 
-      items: ['AWS (EC2)', 'Spring Boot', 'n8n Automation', 'Bash Scripting']
+      category: "Frontend & Mobile", 
+      items: ['Angular 21', 'Flutter', 'Dart', 'Svelte']
     },
     { 
-      category: "Other Skills", 
-      items: ['Python', 'PHP', 'SQL', 'PowerShell']
+      category: "DevOps & Cloud", 
+      items: ['Docker', 'GitHub Actions', 'AWS', 'VPS Deployment']
+    },
+    { 
+      category: "AI & Data", 
+      items: ['Python', 'OpenCV', 'Groq AI', 'MySQL', 'SQLite']
+    },
+    { 
+      category: "Scripting & Tools", 
+      items: ['PowerShell', 'Lua', 'Bash', 'Neovim']
     }
   ];
 </script>
