@@ -1,4 +1,4 @@
-import { turso } from '$lib/server/db';
+import { getTurso } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ url }) => {
 
   query += ' ORDER BY created_at DESC';
 
-  const { rows } = await turso.execute({ sql: query, args });
+	const { rows } = await getTurso().execute({ sql: query, args });
 
   return {
     notes: rows.map((row) => ({
@@ -58,10 +58,10 @@ export const actions: Actions = {
       return fail(429, { error: `Slow down! Try again in ${waitSeconds}s.` });
     }
 
-    await turso.execute({
-      sql: 'INSERT INTO notes (content, category) VALUES (?, ?)',
-      args: [content, category]
-    });
+		await getTurso().execute({
+			sql: 'INSERT INTO notes (content, category) VALUES (?, ?)',
+			args: [content, category]
+		});
 
     submissionTimestamps.set(ip, now);
 

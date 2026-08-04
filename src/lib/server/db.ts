@@ -1,13 +1,19 @@
 import { createClient } from '@libsql/client';
-import { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } from '$env/static/private';
 
-export const turso = createClient({
-	url: TURSO_DATABASE_URL,
-	authToken: TURSO_AUTH_TOKEN
-});
+let _client: ReturnType<typeof createClient> | null = null;
+
+export function getTurso() {
+	if (!_client) {
+		_client = createClient({
+			url: process.env.TURSO_DATABASE_URL!,
+			authToken: process.env.TURSO_AUTH_TOKEN!
+		});
+	}
+	return _client;
+}
 
 export async function initializeDatabase() {
-	await turso.batch([
+	await getTurso().batch([
 		`CREATE TABLE IF NOT EXISTS notes (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			content TEXT NOT NULL,
