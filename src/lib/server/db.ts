@@ -4,9 +4,13 @@ let _client: ReturnType<typeof createClient> | null = null;
 
 export function getTurso() {
 	if (!_client) {
+		const url = process.env.TURSO_DATABASE_URL;
+		const token = process.env.TURSO_AUTH_TOKEN;
+		console.log('[db] TURSO_DATABASE_URL defined:', !!url);
+		console.log('[db] TURSO_AUTH_TOKEN defined:', !!token);
 		_client = createClient({
-			url: process.env.TURSO_DATABASE_URL!,
-			authToken: process.env.TURSO_AUTH_TOKEN!
+			url: url!,
+			authToken: token!
 		});
 	}
 	return _client;
