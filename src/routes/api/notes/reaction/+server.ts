@@ -1,4 +1,4 @@
-import { turso } from '$lib/server/db';
+import { getTurso } from '$lib/server/db';
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
@@ -21,7 +21,7 @@ export const PATCH: RequestHandler = async ({ request, getClientAddress }) => {
 		throw error(429, 'Too many reactions. Wait a moment.');
 	}
 
-	const result = await turso.execute({
+	const result = await getTurso().execute({
 		sql: 'UPDATE notes SET reactions = reactions + 1 WHERE id = ?',
 		args: [id]
 	});

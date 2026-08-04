@@ -1,9 +1,9 @@
-import { turso } from '$lib/server/db';
+import { getTurso } from '$lib/server/db';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const { rows } = await turso.execute(
+		const { rows } = await getTurso().execute(
 			'SELECT * FROM notes ORDER BY created_at DESC LIMIT 3'
 		);
 
