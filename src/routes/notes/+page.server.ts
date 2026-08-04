@@ -18,17 +18,22 @@ export const load: PageServerLoad = async ({ url }) => {
 
   query += ' ORDER BY created_at DESC';
 
-	const { rows } = await getTurso().execute({ sql: query, args });
+  try {
+    const { rows } = await getTurso().execute({ sql: query, args });
 
-  return {
-    notes: rows.map((row) => ({
-      id: Number(row.id),
-      content: String(row.content),
-      category: String(row.category),
-      reactions: Number(row.reactions),
-      created_at: String(row.created_at)
-    }))
-  };
+    return {
+      notes: rows.map((row) => ({
+        id: Number(row.id),
+        content: String(row.content),
+        category: String(row.category),
+        reactions: Number(row.reactions),
+        created_at: String(row.created_at)
+      }))
+    };
+  } catch (err) {
+    console.error('[notes] Failed to load notes:', err);
+    return { notes: [] };
+  }
 };
 
 export const actions: Actions = {
@@ -58,10 +63,15 @@ export const actions: Actions = {
       return fail(429, { error: `Slow down! Try again in ${waitSeconds}s.` });
     }
 
-		await getTurso().execute({
-			sql: 'INSERT INTO notes (content, category) VALUES (?, ?)',
-			args: [content, category]
-		});
+    try {
+      await getTurso().execute({
+        sql: 'INSERT INTO notes (content, category) VALUES (?, ?)',
+        args: [content, category]
+      });
+    } catch (err) {
+      console.error('[notes] Failed to insert note:', err);
+      return fail(500, { error: 'Failed to save note. Please try again.' });
+    }
 
     submissionTimestamps.set(ip, now);
 
