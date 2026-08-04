@@ -3,7 +3,10 @@
   import GeometricLines from "$lib/components/GeometricLines.svelte";
   import Projects from "$lib/components/Projects.svelte";
   import Skills from "$lib/components/Skills.svelte";
+  import RecentNotes from "$lib/components/RecentNotes.svelte";
+  import type { PageData } from "./$types";
 
+  let { data }: { data: PageData } = $props();
   let emailCopied = $state(false);
 
   function copyEmail() {
@@ -93,6 +96,7 @@
 
   <Projects />
   <Skills />
+  <RecentNotes notes={data.recentNotes} />
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
