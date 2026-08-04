@@ -7,7 +7,16 @@
   import type { PageData } from "./$types";
 
   let { data, form }: { data: PageData; form?: { success?: boolean; error?: string } } = $props();
+
   let selectedCategory = $state("all");
+  let searchQuery = $state("");
+
+  $effect(() => {
+    const cat = $page.url.searchParams.get("category");
+    if (cat) {
+      selectedCategory = cat;
+    }
+  });
 
   function handleFilterChange(category: string) {
     selectedCategory = category;
@@ -19,6 +28,21 @@
     }
     goto(url, { replaceState: true, keepFocus: true });
   }
+
+  const filteredNotes = $derived(() => {
+    let result = data.notes;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (n) =>
+          n.content.toLowerCase().includes(q) ||
+          n.category.toLowerCase().includes(q)
+      );
+    }
+    return result;
+  });
+
+  const notesList = $derived(filteredNotes());
 </script>
 
 <svelte:head>
@@ -54,18 +78,27 @@
 
     <div class="lg:col-span-2">
       <div class="mb-6">
-        <NoteFilters selected={selectedCategory} onchange={handleFilterChange} />
+        <NoteFilters
+          selected={selectedCategory}
+          onchange={handleFilterChange}
+          {searchQuery}
+          onSearchChange={(q) => (searchQuery = q)}
+        />
       </div>
 
-      {#if data.notes.length === 0}
+      {#if notesList.length === 0}
         <div class="card text-center py-12">
           <p class="text-gray-500 font-mono text-sm">
-            > no notes yet. be the first!
+            {#if searchQuery}
+              > no notes found matching "{searchQuery}".
+            {:else}
+              > no notes yet. be the first!
+            {/if}
           </p>
         </div>
       {:else}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {#each data.notes as note (note.id)}
+          {#each notesList as note (note.id)}
             <NoteCard {note} />
           {/each}
         </div>
