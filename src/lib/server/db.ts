@@ -1,4 +1,4 @@
-import { createClient } from '@libsql/client';
+import { createClient } from '@libsql/client/http';
 
 let _client: ReturnType<typeof createClient> | null = null;
 
