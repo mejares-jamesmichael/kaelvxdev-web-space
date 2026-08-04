@@ -1,12 +1,12 @@
 <script lang="ts">
   import { config } from '$lib/config';
 
-  let { selected = $bindable('all') }: { selected: string } = $props();
+  let { selected = 'all', onchange }: { selected: string; onchange: (category: string) => void } = $props();
 </script>
 
 <div class="flex flex-wrap gap-2">
   <button
-    onclick={() => (selected = 'all')}
+    onclick={() => onchange('all')}
     class="px-3 py-1 text-xs font-mono border rounded-sm transition-all duration-200
            {selected === 'all'
              ? 'border-white text-white bg-white/10'
@@ -16,7 +16,7 @@
   </button>
   {#each config.noteCategories as cat}
     <button
-      onclick={() => (selected = cat.id)}
+      onclick={() => onchange(cat.id)}
       class="px-3 py-1 text-xs font-mono border rounded-sm transition-all duration-200
              {selected === cat.id
                ? 'border-white text-white bg-white/10'

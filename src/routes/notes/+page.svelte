@@ -6,24 +6,16 @@
   import NoteFilters from "$lib/components/NoteFilters.svelte";
   import type { PageData } from "./$types";
 
-  let {
-    data,
-    form,
-  }: { data: PageData; form?: { success?: boolean; error?: string } } =
-    $props();
+  let { data, form }: { data: PageData; form?: { success?: boolean; error?: string } } = $props();
   let selectedCategory = $state("all");
 
-  $effect(() => {
-    selectedCategory;
-    handleFilterChange();
-  });
-
-  function handleFilterChange() {
+  function handleFilterChange(category: string) {
+    selectedCategory = category;
     const url = new URL($page.url);
-    if (selectedCategory === "all") {
+    if (category === "all") {
       url.searchParams.delete("category");
     } else {
-      url.searchParams.set("category", selectedCategory);
+      url.searchParams.set("category", category);
     }
     goto(url, { replaceState: true, keepFocus: true });
   }
@@ -62,7 +54,7 @@
 
     <div class="lg:col-span-2">
       <div class="mb-6">
-        <NoteFilters bind:selected={selectedCategory} />
+        <NoteFilters selected={selectedCategory} onchange={handleFilterChange} />
       </div>
 
       {#if data.notes.length === 0}
