@@ -96,7 +96,7 @@
     <!-- Dropdown Menu -->
     {#if isOpen}
       <div
-        class="absolute left-0 mt-1.5 w-48 bg-black/95 border border-gray-800 rounded-sm shadow-2xl z-30 p-1 font-mono text-xs backdrop-blur-md"
+        class="absolute left-0 mt-1.5 min-w-full bg-black/95 border border-gray-800 rounded-sm shadow-2xl z-30 p-1 font-mono text-xs backdrop-blur-md"
       >
         <button
           type="button"
