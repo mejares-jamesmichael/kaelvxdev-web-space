@@ -38,16 +38,16 @@
 
 <svelte:window onclick={handleWindowClick} />
 
-<div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
+<div class="flex flex-wrap items-center gap-2.5">
   <!-- Compact Search Input -->
   {#if onSearchChange}
-    <div class="relative flex-1 max-w-xs min-w-[200px]">
+    <div class="relative flex-1 min-w-0">
       <input
         type="text"
         value={searchQuery}
         oninput={(e) => onSearchChange((e.target as HTMLInputElement).value)}
         placeholder="Filter by keyword..."
-        class="w-full bg-black/50 border border-gray-800 rounded-sm pl-8 pr-7 py-1.5 text-xs font-mono text-white
+        class="w-full bg-black/60 border border-gray-800 rounded-sm pl-8 pr-7 py-1.5 text-xs font-mono text-white
                placeholder:text-gray-600 focus:outline-none focus:border-gray-500 transition-colors"
       />
       <!-- Search Icon -->
@@ -78,7 +78,7 @@
         e.stopPropagation();
         isOpen = !isOpen;
       }}
-      class="flex items-center gap-2 px-3 py-1.5 text-xs font-mono border rounded-sm transition-all duration-200 bg-black/50
+      class="flex items-center gap-2 px-3 py-1.5 text-xs font-mono border rounded-sm transition-all duration-200 bg-black/60
              {selected !== 'all'
                ? 'border-gray-400 text-white font-semibold'
                : 'border-gray-800 text-gray-400 hover:border-gray-600 hover:text-gray-200'}"
@@ -87,7 +87,7 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="18" x2="18" y2="18"></line>
       </svg>
       <span>{selectedLabel}</span>
       <span class="text-[9px] text-gray-500 transition-transform duration-200 {isOpen ? 'rotate-180' : ''}">▼</span>
@@ -96,12 +96,12 @@
     <!-- Dropdown Menu -->
     {#if isOpen}
       <div
-        class="absolute left-0 mt-1.5 w-48 bg-black border border-gray-800 rounded-sm shadow-2xl z-30 p-1 font-mono text-xs"
+        class="absolute left-0 mt-1.5 w-48 bg-black/95 border border-gray-800 rounded-sm shadow-2xl z-30 p-1 font-mono text-xs backdrop-blur-md"
       >
         <button
           type="button"
           onclick={() => selectCategory('all')}
-          class="w-full text-left px-3 py-2 rounded-sm flex items-center justify-between text-gray-300 hover:bg-gray-900 transition-colors
+          class="w-full text-left px-3 py-1.5 rounded-sm flex items-center justify-between text-gray-300 hover:bg-gray-900 transition-colors
                  {selected === 'all' ? 'bg-gray-900 text-white font-semibold' : ''}"
         >
           <span>All Categories</span>
@@ -110,16 +110,19 @@
           {/if}
         </button>
 
-        <div class="h-px bg-gray-800 my-1"></div>
+        <div class="h-px bg-gray-800/80 my-1"></div>
 
         {#each config.noteCategories as cat}
           <button
             type="button"
             onclick={() => selectCategory(cat.id)}
-            class="w-full text-left px-3 py-2 rounded-sm flex items-center justify-between hover:bg-gray-900 transition-colors {cat.color}
+            class="w-full text-left px-3 py-1.5 rounded-sm flex items-center justify-between hover:bg-gray-900 transition-colors {cat.color}
                    {selected === cat.id ? 'bg-gray-900 font-semibold' : ''}"
           >
-            <span>{cat.label}</span>
+            <span class="flex items-center gap-1.5">
+              <span class="text-[9px]">●</span>
+              <span>{cat.label}</span>
+            </span>
             {#if selected === cat.id}
               <span class="text-xs">✓</span>
             {/if}
@@ -128,4 +131,16 @@
       </div>
     {/if}
   </div>
+
+  <!-- Active Filter Pill (Quick Clear) -->
+  {#if selected !== 'all'}
+    <button
+      type="button"
+      onclick={() => onchange('all')}
+      class="flex items-center gap-1 px-2 py-1 text-[11px] font-mono text-gray-400 border border-gray-800 rounded-sm bg-gray-900/60 hover:text-white hover:border-gray-600 transition-colors"
+    >
+      <span>filter: {selected}</span>
+      <span>✕</span>
+    </button>
+  {/if}
 </div>

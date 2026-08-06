@@ -88,11 +88,12 @@
   }
 </script>
 
-<div class="card group cursor-default flex flex-col justify-between">
+<div class="card group cursor-default flex flex-col justify-between hover:-translate-y-0.5 hover:border-gray-700 transition-all duration-200">
   <div>
     <div class="flex items-start justify-between mb-3 gap-2">
-      <span class="px-2 py-0.5 text-xs font-mono border border-gray-800 rounded-sm {categoryConfig.color}">
-        {categoryConfig.label}
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border border-gray-800 rounded-sm {categoryConfig.color}">
+        <span class="text-[9px]">●</span>
+        <span>{categoryConfig.label}</span>
       </span>
 
       <div class="flex items-center gap-2">

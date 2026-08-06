@@ -17,16 +17,34 @@
       }
     }
   }
+
+  function getCategoryFlagClass(catId: string): string {
+    if (category !== catId) {
+      return 'border-gray-800/80 text-gray-500 hover:border-gray-700 hover:text-gray-300';
+    }
+    switch (catId) {
+      case 'feedback':
+        return 'border-blue-500/80 text-blue-400 bg-blue-950/40 font-semibold shadow-[0_0_10px_rgba(59,130,246,0.15)]';
+      case 'question':
+        return 'border-yellow-500/80 text-yellow-400 bg-yellow-950/40 font-semibold shadow-[0_0_10px_rgba(234,179,8,0.15)]';
+      case 'compliment':
+        return 'border-green-500/80 text-green-400 bg-green-950/40 font-semibold shadow-[0_0_10px_rgba(34,197,94,0.15)]';
+      case 'thought':
+        return 'border-purple-500/80 text-purple-400 bg-purple-950/40 font-semibold shadow-[0_0_10px_rgba(168,85,247,0.15)]';
+      default:
+        return 'border-gray-400 text-gray-100 bg-gray-800/50 font-semibold shadow-[0_0_10px_rgba(255,255,255,0.1)]';
+    }
+  }
 </script>
 
-<div class="card p-0 overflow-hidden border border-gray-800 bg-black/60 backdrop-blur-sm">
+<div class="card p-0 overflow-hidden border border-gray-800 bg-black/70 backdrop-blur-md transition-all duration-300 hover:border-gray-700/80">
   <!-- Terminal Window Header -->
-  <div class="px-4 py-2 bg-gray-950 border-b border-gray-800 flex items-center justify-between font-mono text-xs text-gray-500">
+  <div class="px-4 py-2.5 bg-gray-950/90 border-b border-gray-800/90 flex items-center justify-between font-mono text-xs text-gray-500">
     <div class="flex items-center gap-2">
       <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
       <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
       <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
-      <span class="ml-2 text-gray-400 text-xs font-mono">guest@kaelvx:~$ ./post_note.sh</span>
+      <span class="ml-2 text-gray-400 text-xs font-mono tracking-tight">guest@kaelvx:~$ ./post_note.sh</span>
     </div>
     <span class="text-[10px] text-gray-600 font-mono hidden sm:inline">bash 5.2</span>
   </div>
@@ -48,7 +66,7 @@
   >
     <!-- CLI Flags / Category Selector -->
     <div>
-      <span class="block text-xs font-mono text-gray-400 mb-2">
+      <span class="block text-[11px] font-mono text-gray-400 mb-2">
         # select category flag:
       </span>
       <div class="flex flex-wrap gap-1.5">
@@ -57,9 +75,7 @@
             type="button"
             onclick={() => (category = cat.id)}
             class="px-2.5 py-1 text-xs font-mono border rounded-sm transition-all duration-200
-                   {category === cat.id
-                     ? 'border-gray-400 text-white bg-white/10 font-semibold'
-                     : 'border-gray-800/80 text-gray-500 hover:border-gray-700 hover:text-gray-300'}"
+                   {getCategoryFlagClass(cat.id)}"
           >
             --{cat.id}
           </button>
@@ -70,14 +86,14 @@
 
     <!-- Terminal Textarea Input -->
     <div>
-      <label for="content" class="block text-xs font-mono text-gray-400 mb-1.5 flex justify-between items-center">
+      <div class="block text-[11px] font-mono text-gray-400 mb-1.5 flex justify-between items-center">
         <span># enter payload:</span>
-        <span class="text-[11px] text-gray-600 font-mono">Ctrl+Enter to send</span>
-      </label>
+        <span class="text-[10px] text-gray-600 font-mono">[Ctrl+Enter to send]</span>
+      </div>
 
-      <div class="relative bg-black border border-gray-800 rounded-sm p-3 focus-within:border-gray-500 transition-colors">
+      <div class="relative bg-black border border-gray-800/90 rounded-sm p-3 focus-within:border-gray-500 focus-within:ring-1 focus-within:ring-gray-700/50 transition-all">
         <div class="flex items-start gap-2">
-          <span class="text-green-500 font-mono text-sm select-none pt-0.5">$</span>
+          <span class="text-green-500 font-mono text-sm select-none pt-0.5 font-bold">$</span>
           <textarea
             id="content"
             name="content"
@@ -87,14 +103,14 @@
             required
             rows="4"
             placeholder='echo "Write your anonymous note..." > note.txt'
-            class="w-full bg-transparent text-white font-mono text-sm leading-relaxed
+            class="w-full bg-transparent text-gray-100 font-mono text-sm leading-relaxed
                    placeholder:text-gray-600 focus:outline-none resize-none"
           ></textarea>
         </div>
 
         <div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-900 text-xs font-mono">
-          <span class="text-gray-600 text-[11px]">FLAG: --{category}</span>
-          <span class="text-gray-500">
+          <span class="text-gray-500 text-[11px]">FLAG: <span class="text-gray-300">--{category}</span></span>
+          <span class="text-gray-500 text-[11px] {content.length >= 480 ? 'text-red-400 font-bold' : ''}">
             [LEN: {content.length}/500]
           </span>
         </div>
