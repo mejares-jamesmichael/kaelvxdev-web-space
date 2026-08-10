@@ -165,7 +165,7 @@
     <button
       type="button"
       onclick={() => onchange("all")}
-      class="flex items-center gap-1 px-2 py-1 text-[11px] font-mono text-gray-400 border border-gray-800 rounded-sm bg-gray-900/60 hover:text-white hover:border-gray-600 transition-colors"
+      class="hidden sm:flex items-center gap-1 px-2 py-1 text-[11px] font-mono text-gray-400 border border-gray-800 rounded-sm bg-gray-900/60 hover:text-white hover:border-gray-600 transition-colors"
     >
       <span>filter: {selected}</span>
       <span>✕</span>
