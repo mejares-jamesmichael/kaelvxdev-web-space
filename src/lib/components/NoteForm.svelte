@@ -37,13 +37,13 @@
   }
 </script>
 
-<div class="card p-0 overflow-hidden border border-gray-800 bg-black/70 backdrop-blur-md transition-all duration-300 hover:border-gray-700/80">
+<div class="card p-0 overflow-hidden border border-gray-800/90 bg-black/75 backdrop-blur-md transition-all duration-300 hover:border-gray-700">
   <!-- Terminal Window Header -->
-  <div class="px-4 py-2.5 bg-gray-950/90 border-b border-gray-800/90 flex items-center justify-between font-mono text-xs text-gray-500">
+  <div class="px-4 py-2.5 bg-gray-950/95 border-b border-gray-800/90 flex items-center justify-between font-mono text-xs text-gray-500">
     <div class="flex items-center gap-2">
-      <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
-      <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
-      <span class="w-2.5 h-2.5 rounded-full bg-gray-700 inline-block"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"></span>
       <span class="ml-2 text-gray-400 text-xs font-mono tracking-tight">guest@kaelvx:~$ ./post_note.sh</span>
     </div>
     <span class="text-[10px] text-gray-600 font-mono hidden sm:inline">bash 5.2</span>

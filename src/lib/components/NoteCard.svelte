@@ -88,22 +88,22 @@
   }
 </script>
 
-<div class="card group cursor-default flex flex-col justify-between hover:-translate-y-0.5 hover:border-gray-700 transition-all duration-200">
+<div class="card group cursor-default flex flex-col justify-between bg-black/60 backdrop-blur-md border-gray-800/90 hover:-translate-y-0.5 hover:border-gray-600/80 transition-all duration-200 p-5">
   <div>
     <div class="flex items-start justify-between mb-3 gap-2">
-      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border border-gray-800 rounded-sm {categoryConfig.color}">
-        <span class="text-[9px]">●</span>
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono border border-gray-800/90 rounded-sm bg-black/40 {categoryConfig.color}">
+        <span class="text-[8px] animate-pulse">●</span>
         <span>{categoryConfig.label}</span>
       </span>
 
       <div class="flex items-center gap-2">
-        <span class="text-xs font-mono text-gray-600">{formatTimeAgo(note.created_at)}</span>
+        <span class="text-xs font-mono text-gray-500">{formatTimeAgo(note.created_at)}</span>
         {#if !isPreview}
           <button
             type="button"
             onclick={copyText}
             title="Copy text"
-            class="text-gray-600 hover:text-gray-300 transition-colors text-xs font-mono"
+            class="text-gray-500 hover:text-gray-200 transition-colors text-xs font-mono"
           >
             {copied ? 'copied!' : 'copy'}
           </button>
@@ -111,18 +111,18 @@
       </div>
     </div>
 
-    <p class="text-gray-300 text-sm font-mono leading-relaxed mb-4 whitespace-pre-wrap break-words">
+    <p class="text-gray-200 text-sm font-mono leading-relaxed mb-4 whitespace-pre-wrap break-words">
       {note.content}
     </p>
   </div>
 
-  <div class="flex items-center justify-between pt-3 border-t border-gray-800/50">
+  <div class="flex items-center justify-between pt-3 border-t border-gray-800/60">
     <button
       type="button"
       onclick={handleReaction}
       disabled={hasReacted || isPreview}
       class="flex items-center gap-1.5 text-xs font-mono transition-colors duration-200
-             {hasReacted ? 'text-red-400 cursor-default' : 'text-gray-600 hover:text-red-400 cursor-pointer'}"
+             {hasReacted ? 'text-red-400 cursor-default' : 'text-gray-500 hover:text-red-400 cursor-pointer'}"
     >
       <svg
         width="14"
@@ -139,6 +139,6 @@
       <span>{reactions}</span>
     </button>
 
-    <span class="text-[10px] font-mono text-gray-700">#{note.id}</span>
+    <span class="text-[10px] font-mono text-gray-600">#{note.id}</span>
   </div>
 </div>
