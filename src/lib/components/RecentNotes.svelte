@@ -15,7 +15,7 @@
 <section class="py-20 pointer-events-auto">
   <div class="mb-12">
     <h2 class="section-header">
-      <span class="section-number">03.</span>
+      <span class="section-number">04.</span>
       <span>Recent Notes</span>
       <div class="section-divider"></div>
     </h2>

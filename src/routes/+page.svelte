@@ -3,6 +3,7 @@
   import GeometricLines from "$lib/components/GeometricLines.svelte";
   import Projects from "$lib/components/Projects.svelte";
   import Skills from "$lib/components/Skills.svelte";
+  import Certifications from "$lib/components/Certifications.svelte";
   import RecentNotes from "$lib/components/RecentNotes.svelte";
   import type { PageData } from "./$types";
 
@@ -96,6 +97,7 @@
 
   <Projects />
   <Skills />
+  <Certifications />
   <RecentNotes notes={data.recentNotes} />
 
   <!-- FOOTER (Bottom Left) -->
