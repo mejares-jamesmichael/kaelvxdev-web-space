@@ -40,24 +40,10 @@
               </p>
             </div>
           </div>
+          </div>
 
-          {#if cert.credlyBadgeId}
-            <div class="shrink-0 mx-auto sm:mx-0">
-              <iframe
-                src={`https://www.credly.com/badges/${cert.credlyBadgeId}/embedded_view`}
-                width="150"
-                height="270"
-                frameborder="0"
-                scrolling="no"
-                loading="lazy"
-                title="{cert.name} badge"
-              ></iframe>
-            </div>
-          {/if}
-        </div>
-
-        {#if cert.verifyUrl || cert.certificateUrl}
-          <div class="flex flex-wrap gap-3 mt-4">
+          {#if cert.verifyUrl || cert.certificateUrl}
+            <div class="flex flex-wrap gap-3 mt-4">
             {#if cert.verifyUrl}
               <a
                 href={cert.verifyUrl}
