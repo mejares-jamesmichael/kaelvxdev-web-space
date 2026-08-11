@@ -28,7 +28,8 @@ export const config = {
       expires: null,
       verifyUrl:
         "https://www.credly.com/badges/c3a6119a-a6bc-4345-ab39-4725dd24dc01",
-      certificateUrl: null,
+      certificateUrl:
+        "https://drive.google.com/file/d/1xRjz_V9Xn4YjAivYDJJ-BzkJx9uGJTbN/view?usp=sharing",
     },
   ],
   noteCategories: [
