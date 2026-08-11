@@ -38,9 +38,6 @@
                   <span class="text-green-500/70">/ no expiry</span>
                 {/if}
               </p>
-              <p class="break-all">
-                <span class="text-gray-400">id:</span> {cert.credentialId}
-              </p>
             </div>
           </div>
 
@@ -59,15 +56,29 @@
           {/if}
         </div>
 
-        {#if cert.verifyUrl}
-          <a
-            href={cert.verifyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn inline-block text-white text-xs mt-4"
-          >
-            > verify credential
-          </a>
+        {#if cert.verifyUrl || cert.certificateUrl}
+          <div class="flex flex-wrap gap-3 mt-4">
+            {#if cert.verifyUrl}
+              <a
+                href={cert.verifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn inline-block text-white text-xs"
+              >
+                > verify credential
+              </a>
+            {/if}
+            {#if cert.certificateUrl}
+              <a
+                href={cert.certificateUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn inline-block text-white text-xs"
+              >
+                > view certificate
+              </a>
+            {/if}
+          </div>
         {/if}
       </div>
     {/each}
