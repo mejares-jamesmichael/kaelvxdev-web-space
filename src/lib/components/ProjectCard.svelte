@@ -6,12 +6,13 @@
     stats?: { label: string; value: string; color?: string }[];
     repoUrl?: string;
     demoUrl?: string;
+    class?: string;
   }
   
-  let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined }: Props = $props();
+  let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined, class: className = '' }: Props = $props();
 </script>
 
-<div class="card glow-card cursor-pointer group">
+<div class="card glow-card cursor-pointer group h-full flex flex-col {className}">
   <!-- Header -->
   <div class="relative z-10 flex justify-between items-start mb-4">
     <h3 class="text-xl font-bold text-white font-mono tracking-tight group-hover:text-gray-300 transition-colors">
@@ -33,7 +34,7 @@
   </div>
 
   <!-- Description -->
-  <p class="relative z-10 text-gray-400 text-sm leading-relaxed mb-6 font-mono">
+  <p class="relative z-10 text-gray-400 text-sm leading-relaxed mb-6 font-mono flex-grow">
     {description}
   </p>
 
