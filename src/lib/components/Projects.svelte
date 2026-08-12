@@ -35,13 +35,21 @@
       ]}
       stats={[
         { label: "Coverage", value: "80% Enforced", color: "text-green-400" },
-        { label: "Security", value: "JWT + OAuth", color: "text-yellow-400" },
+        {
+          label: "Security",
+          value: "JWT + Google OAuth",
+          color: "text-yellow-400",
+        },
         {
           label: "Architecture",
           value: "Microservices",
           color: "text-purple-400",
         },
-        { label: "Deployment", value: "CI/CD VPS", color: "text-blue-400" },
+        {
+          label: "Deployment",
+          value: "GitHub Actions CI/CD",
+          color: "text-blue-400",
+        },
       ]}
     />
 
