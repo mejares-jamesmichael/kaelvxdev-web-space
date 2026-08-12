@@ -44,9 +44,9 @@
       tags={['Flutter', 'Dart', 'forui', 'AI Microservices', 'SQLite', 'MVVM Architecture']}
       stats={[
         { label: 'Platform', value: 'Android', color: 'text-blue-400' },
-        { label: 'AI Model', value: 'Smart-AI', color: 'text-purple-400' },
+        { label: 'AI Model', value: 'Groq AI', color: 'text-purple-400' },
         { label: 'State', value: 'Provider', color: 'text-yellow-400' },
-        { label: 'Database', value: 'Local SQLite', color: 'text-green-400' }
+        { label: 'Database', value: 'SQLite', color: 'text-green-400' }
       ]}
     />
 
