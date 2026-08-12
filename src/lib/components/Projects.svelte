@@ -17,9 +17,9 @@
     </p>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[minmax(0,1fr)]">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]">
     <ProjectCard
-      class="md:col-span-2 lg:col-span-3 lg:row-span-2"
+      class="md:col-span-2 lg:col-span-2 lg:row-span-2"
       title="iBudget Finance Savings Platform"
       description="A smart financial budgeting platform, featuring a dedicated AI microservice (RAG) for personalized advice/insights
         and a highly automated DevOps pipeline enforcing 80% code coverage."
@@ -80,7 +80,7 @@
     />
 
     <ProjectCard
-      class="md:col-span-2 lg:col-span-2"
+      class="md:col-span-1 lg:col-span-2"
       title="Windows Dotfiles"
       description="Personal Windows development environment featuring tiling window manager, Neovim config, and custom terminal setups."
       repoUrl="https://github.com/mejares-jamesmichael/windows-dotfiles"
@@ -94,7 +94,7 @@
     />
 
     <ProjectCard
-      class="md:col-span-1 lg:col-span-1"
+      class="md:col-span-2 lg:col-span-3"
       title="PowerShell Disk Analyzer"
       description="A PowerShell GUI application for disk usage analysis and automated cleanup with file preview and safe mode."
       repoUrl="https://github.com/mejares-jamesmichael/OS-PROJECT-Powershell-GUI"
