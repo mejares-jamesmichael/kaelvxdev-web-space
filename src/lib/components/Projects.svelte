@@ -115,7 +115,7 @@
     <ProjectCard
       class="md:col-span-1 lg:col-span-2"
       title="Windows Dotfiles"
-      description="Personal Windows development environment featuring tiling window manager, Neovim config, and custom terminal setups."
+      description="Personal Windows development environment featuring tiling window manager, Neovim config, and custom terminal setups. A systematic collection of all the tools that are fit for the terminal development."
       repoUrl="https://github.com/mejares-jamesmichael/windows-dotfiles"
       tags={[
         "Lua",
@@ -128,7 +128,11 @@
         "Tmux",
       ]}
       stats={[
-        { label: "Window Manager", value: "Komorebi", color: "text-blue-400" },
+        {
+          label: "Window Manager",
+          value: "Komorebi TWM",
+          color: "text-blue-400",
+        },
         { label: "Editor", value: "Neovim", color: "text-green-400" },
         {
           label: "Shell",
@@ -158,7 +162,7 @@
       ]}
       stats={[
         { label: "Detection", value: "Real-time CV", color: "text-green-400" },
-        { label: "Gestures", value: "5 Mapped", color: "text-purple-400" },
+        { label: "Gestures", value: "5 Basic", color: "text-purple-400" },
         { label: "Architecture", value: "Modular", color: "text-blue-400" },
         { label: "Threading", value: "Non-blocking", color: "text-yellow-400" },
       ]}
