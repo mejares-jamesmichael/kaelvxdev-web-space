@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { hoveredProject } from '$lib/store';
+  
   interface Props {
     title: string;
     description: string;
@@ -12,7 +14,12 @@
   let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined, class: className = '' }: Props = $props();
 </script>
 
-<div class="card p-4 glow-card cursor-pointer group h-full flex flex-col {className}">
+<div 
+  class="card p-4 glow-card cursor-pointer group h-full flex flex-col {className}"
+  onmouseenter={() => $hoveredProject = title}
+  onmouseleave={() => $hoveredProject = null}
+  role="presentation"
+>
   <!-- Header -->
   <div class="relative z-10 flex justify-between items-start mb-4">
     <h3 class="text-base font-bold text-white font-mono tracking-tight group-hover:text-gray-300 transition-colors">

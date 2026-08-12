@@ -18,6 +18,27 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-default) #000000;
+}
+
+/* WebKit/Blink Scrollbar (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
 }
 
 @layer components {
