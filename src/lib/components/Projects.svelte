@@ -56,7 +56,7 @@
       description="A full-stack volunteer management platform for NLCOM with role-based access, ICS module, AI chatbot, RSVP system, attendance tracking, and SMS notifications."
       repoUrl="https://github.com/PUPT-Quantum-Leap/capstone-nlcom-volunteer-management-system"
       demoUrl="https://servetrack.quantumapp.tech/"
-      tags={['Laravel 12', 'Angular 21', 'MySQL', 'Docker', 'GitHub Actions', 'Twilio', 'Groq AI']}
+      tags={['Laravel', 'Angular', 'MySQL', 'Docker', 'GitHub Actions', 'Groq AI']}
       stats={[
         { label: 'Architecture', value: 'Monorepo', color: 'text-purple-400' },
         { label: 'Auth', value: 'Sanctum + OAuth', color: 'text-yellow-400' },
