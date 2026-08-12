@@ -6,15 +6,16 @@
     stats?: { label: string; value: string; color?: string }[];
     repoUrl?: string;
     demoUrl?: string;
+    class?: string;
   }
   
-  let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined }: Props = $props();
+  let { title, description, tags = [], stats = [], repoUrl = undefined, demoUrl = undefined, class: className = '' }: Props = $props();
 </script>
 
-<div class="card glow-card cursor-pointer group">
+<div class="card p-4 glow-card cursor-pointer group h-full flex flex-col {className}">
   <!-- Header -->
   <div class="relative z-10 flex justify-between items-start mb-4">
-    <h3 class="text-xl font-bold text-white font-mono tracking-tight group-hover:text-gray-300 transition-colors">
+    <h3 class="text-base font-bold text-white font-mono tracking-tight group-hover:text-gray-300 transition-colors">
       > {title}
     </h3>
     <div class="flex gap-2">
@@ -33,13 +34,13 @@
   </div>
 
   <!-- Description -->
-  <p class="relative z-10 text-gray-400 text-sm leading-relaxed mb-6 font-mono">
+  <p class="relative z-10 text-xs text-gray-400 leading-relaxed mb-4 font-mono flex-grow">
     {description}
   </p>
 
   <!-- Stats Grid -->
   {#if stats.length > 0}
-    <div class="relative z-10 grid grid-cols-2 gap-y-2 gap-x-4 mb-6 py-3 border-y border-gray-800">
+    <div class="relative z-10 grid grid-cols-2 gap-y-1.5 gap-x-4 mb-4 py-2 border-y border-gray-800">
       {#each stats as stat}
         <div class="flex items-center justify-between text-xs font-mono">
           <span class="text-gray-500">{stat.label}</span>
@@ -52,7 +53,7 @@
   <!-- Tech Stack -->
   <div class="relative z-10 flex flex-wrap gap-2">
     {#each tags as tag}
-      <span class="px-2 py-1 text-xs border border-gray-700 text-gray-300 rounded-sm font-mono bg-gray-900/50">
+      <span class="px-1.5 py-0.5 text-[11px] border border-gray-700 text-gray-300 rounded-sm font-mono bg-gray-900/50">
         {tag}
       </span>
     {/each}

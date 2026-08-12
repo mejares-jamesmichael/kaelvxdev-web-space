@@ -22,13 +22,44 @@ html {
 
 @layer components {
   .card {
-    @apply p-6 border rounded-sm bg-black/50;
+    @apply p-6 border rounded-sm relative overflow-hidden bg-black/50;
     border-color: var(--border-default);
-    transition: border-color 300ms ease-out;
+    transition: border-color 300ms ease-out, transform 300ms ease-out;
   }
   
+  /* Datacenter Scanline Effect overlay */
+  .card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 200%;
+    background: linear-gradient(
+      180deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.03) 50%, 
+      transparent 100%
+    );
+    transform: translateY(-100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Keep content above the scanline */
+  .card > * {
+    position: relative;
+    z-index: 1;
+  }
+
   .card:hover {
     border-color: var(--border-hover);
+  }
+
+  .card:hover::after {
+    animation: scanline 2.5s infinite linear;
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(50%); }
   }
   
   .section-header {

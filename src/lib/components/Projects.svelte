@@ -17,8 +17,9 @@
     </p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]">
     <ProjectCard
+      class="md:col-span-2 lg:col-span-2 lg:row-span-2"
       title="iBudget Finance Savings Platform"
       description="A smart financial budgeting platform, featuring a dedicated AI microservice (RAG) for personalized advice/insights
         and a highly automated DevOps pipeline enforcing 80% code coverage."
@@ -34,6 +35,7 @@
     />
 
     <ProjectCard
+      class="md:col-span-1 lg:col-span-1"
       title="PawSight Pet Utility Mobile"
       description="An android utility application for pet care with integrated AI assistance.
         Built with clean MVVM architecture and forui library offering offline-first capabilities."
@@ -49,6 +51,7 @@
     />
 
     <ProjectCard
+      class="md:col-span-1 lg:col-span-1"
       title="ServeTrack - Volunteer Management System"
       description="A full-stack volunteer management platform for NLCOM with role-based access, ICS module, AI chatbot, RSVP system, attendance tracking, and SMS notifications."
       repoUrl="https://github.com/PUPT-Quantum-Leap/capstone-nlcom-volunteer-management-system"
@@ -63,19 +66,21 @@
     />
 
     <ProjectCard
-      title="Gesture to LLM"
-      description="A real-time hand gesture recognition system that lets you communicate with an LLM using sign language gestures via webcam."
-      repoUrl="https://github.com/mejares-jamesmichael/sl-llm"
-      tags={['Python', 'OpenCV', 'MediaPipe', 'NumPy', 'Webhooks']}
+      class="md:col-span-1 lg:col-span-1"
+      title="PowerShell Disk Analyzer"
+      description="A PowerShell GUI application for disk usage analysis and automated cleanup with file preview and safe mode."
+      repoUrl="https://github.com/mejares-jamesmichael/OS-PROJECT-Powershell-GUI"
+      tags={['PowerShell', 'Windows GUI', 'Scripting', 'System Admin']}
       stats={[
-        { label: 'Detection', value: 'Real-time CV', color: 'text-green-400' },
-        { label: 'Gestures', value: '5 Mapped', color: 'text-purple-400' },
-        { label: 'Architecture', value: 'Modular', color: 'text-blue-400' },
-        { label: 'Threading', value: 'Non-blocking', color: 'text-yellow-400' }
+        { label: 'Interface', value: 'GUI App', color: 'text-purple-400' },
+        { label: 'Features', value: 'Scan + Clean', color: 'text-green-400' },
+        { label: 'Safety', value: 'File Preview', color: 'text-yellow-400' },
+        { label: 'License', value: 'MIT', color: 'text-blue-400' }
       ]}
     />
 
     <ProjectCard
+      class="md:col-span-1 lg:col-span-2"
       title="Windows Dotfiles"
       description="Personal Windows development environment featuring tiling window manager, Neovim config, and custom terminal setups."
       repoUrl="https://github.com/mejares-jamesmichael/windows-dotfiles"
@@ -89,15 +94,16 @@
     />
 
     <ProjectCard
-      title="PowerShell Disk Analyzer"
-      description="A PowerShell GUI application for disk usage analysis and automated cleanup with file preview and safe mode."
-      repoUrl="https://github.com/mejares-jamesmichael/OS-PROJECT-Powershell-GUI"
-      tags={['PowerShell', 'Windows GUI', 'Scripting', 'System Admin']}
+      class="md:col-span-2 lg:col-span-3"
+      title="Gesture to LLM"
+      description="A real-time hand gesture recognition system that lets you communicate with an LLM using sign language gestures via webcam."
+      repoUrl="https://github.com/mejares-jamesmichael/sl-llm"
+      tags={['Python', 'OpenCV', 'MediaPipe', 'NumPy', 'Webhooks']}
       stats={[
-        { label: 'Interface', value: 'GUI App', color: 'text-purple-400' },
-        { label: 'Features', value: 'Scan + Clean', color: 'text-green-400' },
-        { label: 'Safety', value: 'File Preview', color: 'text-yellow-400' },
-        { label: 'License', value: 'MIT', color: 'text-blue-400' }
+        { label: 'Detection', value: 'Real-time CV', color: 'text-green-400' },
+        { label: 'Gestures', value: '5 Mapped', color: 'text-purple-400' },
+        { label: 'Architecture', value: 'Modular', color: 'text-blue-400' },
+        { label: 'Threading', value: 'Non-blocking', color: 'text-yellow-400' }
       ]}
     />
   </div>
