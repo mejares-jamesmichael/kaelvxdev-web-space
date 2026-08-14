@@ -1,6 +1,5 @@
 <script>
   import '../app.css';
-  // ponytail: Removed TelemetryBar because it's redundant (YAGNI)
 </script>
 
 <div class="min-h-screen bg-black text-white selection:bg-white selection:text-black relative">
