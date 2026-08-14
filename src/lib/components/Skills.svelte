@@ -2,7 +2,7 @@
   const skills = [
     { 
       category: "Full Stack Development", 
-      items: ['Laravel 12', 'Spring Boot', 'Angular 21', 'Flutter', 'PHP', 'Node.js']
+      items: ['Laravel', 'Spring Boot', 'Angular', 'Flutter', 'PHP', 'Node.js']
     },
     { 
       category: "DevOps & Cloud", 
