@@ -14,7 +14,7 @@ export const config = {
       field: "Computer Systems Servicing",
       issuer: "TESDA",
       issued: "May 2023",
-      expires: "May 2028",
+      expires: null,
       verifyUrl:
         "https://t2mis.tesda.gov.ph/Learners/S/3700460046006A006B005A0042007600590062006C0047004700300032006900530066007A0066002F0056006E004C0030005000610079002F004C00420054006B00670039007100440075006D0077004B00760038003D00",
       certificateUrl:
