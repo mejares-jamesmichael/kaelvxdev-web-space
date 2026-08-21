@@ -116,15 +116,8 @@
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
       <div class="cv-page-wrapper" oncontextmenu={(e) => e.preventDefault()}>
-        <div class="cv-watermark" aria-hidden="true">
-          {#each Array(8) as _, i}
-            <span
-              class="cv-watermark-text"
-              style="top: {10 + i * 15}%; left: {(i % 2) * 35 + 5}%; transform: rotate({-25 + (i % 3) * 5}deg)"
-            >
-              kaelvxdev.space &bull; {watermarkTime}
-            </span>
-          {/each}
+        <div class="cv-timestamp" aria-hidden="true">
+          viewed {watermarkTime}
         </div>
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <img
@@ -273,23 +266,16 @@
     transition: transform 0.15s ease;
   }
 
-  .cv-watermark {
+  .cv-timestamp {
     position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
-  }
-
-  .cv-watermark-text {
-    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.15);
-    white-space: nowrap;
-    letter-spacing: 0.05em;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
     pointer-events: none;
     user-select: none;
+    z-index: 2;
   }
 
   .cv-footer {
