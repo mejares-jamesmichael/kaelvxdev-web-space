@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "node scripts/render-cv.mjs && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
@@ -25,6 +25,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@libsql/client": "^0.17.4"
+    "@libsql/client": "^0.17.4",
+    "pdf-to-png-converter": "^4.2.0",
+    "sharp": "^0.35.3"
   }
 }
