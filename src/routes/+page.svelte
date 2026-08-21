@@ -5,10 +5,12 @@
   import Skills from "$lib/components/Skills.svelte";
   import Certifications from "$lib/components/Certifications.svelte";
   import RecentNotes from "$lib/components/RecentNotes.svelte";
+  import CvViewer from "$lib/components/CvViewer.svelte";
   import type { PageData } from "./$types";
 
   let { data }: { data: PageData } = $props();
   let emailCopied = $state(false);
+  let cvOpen = $state(false);
 
   function copyEmail() {
     navigator.clipboard.writeText(config.email);
@@ -85,13 +87,9 @@
     <div class="mt-10 flex flex-wrap gap-4 text-base">
       <a href="#projects" class="btn text-white"> Projects </a>
       <a href="#skills" class="btn text-white"> Skills </a>
-      <a
-        href={config.cvPath}
-        download={config.cvPath.split("/").pop()}
-        class="btn text-white"
-      >
-        Download CV
-      </a>
+      <button onclick={() => (cvOpen = true)} class="btn text-white">
+        View CV
+      </button>
     </div>
   </main>
 
@@ -121,3 +119,5 @@
     </div>
   </footer>
 </div>
+
+<CvViewer bind:open={cvOpen} />

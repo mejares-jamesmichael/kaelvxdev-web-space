@@ -3,8 +3,13 @@
   publish = "build"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
   NPM_FLAGS = "--version"
 
 [functions]
   node_bundler = "esbuild"
+
+[[headers]]
+  for = "/cv/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
