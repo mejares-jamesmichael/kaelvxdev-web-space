@@ -52,12 +52,12 @@
 
 <div class="min-h-screen p-12 md:p-24 max-w-[1600px] mx-auto">
   <header class="mb-16">
-    <a
-      href="/"
-      class="text-sm font-mono text-gray-500 hover:text-white transition-colors mb-8 inline-block"
-    >
-      &#8592; back
-    </a>
+    <!-- <a -->
+    <!--   href="/" -->
+    <!--   class="text-sm font-mono text-gray-500 hover:text-white transition-colors mb-8 inline-block" -->
+    <!-- > -->
+    <!--   &#8592; back -->
+    <!-- </a> -->
 
     <h1
       class="text-4xl md:text-5xl font-bold text-white mb-4 font-mono tracking-tight"
