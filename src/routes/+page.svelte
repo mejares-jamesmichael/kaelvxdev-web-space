@@ -96,7 +96,7 @@
   <Projects />
   <Skills />
   <Certifications />
-  <RecentNotes notes={data.recentNotes} />
+  <!-- <RecentNotes notes={data.recentNotes} /> -->
 
   <!-- FOOTER (Bottom Left) -->
   <footer id="contact" class="pointer-events-auto mt-20">
